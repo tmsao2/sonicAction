@@ -76,7 +76,7 @@ void Stage::DataLoad(const char * path)
 	{
 		std::vector<unsigned char> blockdata(_fmfdata.mapWidth*_fmfdata.mapHeight);
 		FileRead_read(blockdata.data(), blockdata.size(), fmf_h);
-		for (int i = 0; i < _fmfdata.mapWidth; ++i)
+		for (size_t i = 0; i < blockdata.size(); ++i)
 		{
 			BlockType no = (BlockType)blockdata[i];
 			int runlength;
@@ -109,7 +109,7 @@ void Stage::DataLoad(const char * path)
 	FileRead_close(fmf_h);
 }
 
-int Stage::SetRunLength(int & idx,int no,std::vector<unsigned char> data)
+int Stage::SetRunLength(size_t & idx,int no,std::vector<unsigned char> data)
 {
 	int runlength = 1;
 	for (idx = idx + 1; idx < data.size(); ++idx)
