@@ -29,7 +29,7 @@ private:
 
 	const Camera& _camera;
 
-	int SetRunLength(size_t& idx,int no,std::vector<unsigned char> data);
+	int CheckRunLength(int& idxX,int& idxY,int no,std::vector<unsigned char> data);
 	std::map<unsigned char,std::vector<Vector2f>> _terraPositions;
 	std::vector<std::unique_ptr<Block>> _blocks;
 

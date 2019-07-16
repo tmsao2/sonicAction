@@ -76,32 +76,18 @@ void Stage::DataLoad(const char * path)
 	{
 		std::vector<unsigned char> blockdata(_fmfdata.mapWidth*_fmfdata.mapHeight);
 		FileRead_read(blockdata.data(), blockdata.size(), fmf_h);
-		for (size_t i = 0; i < blockdata.size(); ++i)
+		for (int y = 0; y < _fmfdata.mapHeight; ++y)
 		{
-			BlockType no = (BlockType)blockdata[i];
-			int runlength;
-			switch (no)
+			for (int x = 0; x < _fmfdata.mapWidth; ++x)
 			{
-			case BlockType::brick:
-				_blocks.emplace_back(bf.Create(BlockType::brick,
-					Vector2((i%_fmfdata.mapWidth)*block_size, (i / _fmfdata.mapWidth)*block_size)));
-				break;
-			case BlockType::lift:
-				runlength = SetRunLength(i, lift_no, blockdata);
-				_blocks.emplace_back(bf.Create(BlockType::lift,
-					Vector2((i%_fmfdata.mapWidth)*block_size, (i / _fmfdata.mapWidth)*block_size), runlength));
-				break;
-			case BlockType::slide:
-				runlength = SetRunLength(i, slide_no, blockdata);
-				_blocks.emplace_back(bf.Create(BlockType::slide,
-					Vector2((i%_fmfdata.mapWidth)*block_size, (i / _fmfdata.mapWidth)*block_size), runlength));
-				break;
-			case BlockType::pendulum:
-				runlength = SetRunLength(i, pendulum_no, blockdata);
-				_blocks.emplace_back(bf.Create(BlockType::pendulum,
-					Vector2((i%_fmfdata.mapWidth)*block_size, (i / _fmfdata.mapWidth)*block_size), runlength));
-			default:
-				break;
+				auto no = blockdata[x + y * _fmfdata.mapWidth];
+				if (no != 0)
+				{
+					int runlength;
+					runlength = CheckRunLength(x, y, no, blockdata);
+					_blocks.emplace_back(bf.Create((BlockType)no,
+						Vector2(x*block_size, y*block_size), runlength));
+				}
 			}
 		}
 	}
@@ -109,18 +95,22 @@ void Stage::DataLoad(const char * path)
 	FileRead_close(fmf_h);
 }
 
-int Stage::SetRunLength(size_t & idx,int no,std::vector<unsigned char> data)
+int Stage::CheckRunLength(int& idxX, int& idxY, int no, std::vector<unsigned char> data)
 {
 	int runlength = 1;
-	for (idx = idx + 1; idx < data.size(); ++idx)
+	if (no == 1)
 	{
-		if (data[idx] == no)
+		return runlength;
+	}
+	for (idxX = idxX + 1; idxX < _fmfdata.mapWidth; ++idxX)
+	{
+		if (data[idxX + idxY * _fmfdata.mapWidth] == no)
 		{
 			++runlength;
 		}
 		else
 		{
-			--idx;
+			--idxX;
 			break;
 		}
 	}

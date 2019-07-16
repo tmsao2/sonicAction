@@ -68,7 +68,7 @@ public:
 
 	void Update()override
 	{
-		auto cnt = abs((++_frame / 180) % move_frame - move_frame / 2);
+		auto cnt = abs((++_frame / 60) % move_frame - move_frame / 2);
 		if (cnt == 0)
 		{
 			_rect.center.x += _speed;
@@ -82,6 +82,10 @@ public:
 	void Draw()override
 	{
 		auto range = _camera.GetViewRange();
+		if (_rect.Right() < range.Left() || _rect.Left() > range.Right())
+		{
+			return;
+		}
 		auto c = _camera.GetOffset();
 		for (int i = 0; i < 5; ++i)
 		{
@@ -96,7 +100,10 @@ public:
 
 	void OnCollision(Actor* actor, const Rect& rc)override
 	{
-
+		if (rc.center.y < 0)
+		{
+			actor->OnGround(_rect.Top(), 0);
+		}
 	}
 };
 
@@ -126,6 +133,10 @@ public:
 	void Draw()override
 	{
 		auto range = _camera.GetViewRange();
+		if (_rect.Right() < range.Left() || _rect.Left() > range.Right())
+		{
+			return;
+		}
 		auto c = _camera.GetOffset();
 		for (int i = 0; i < 5; ++i)
 		{
