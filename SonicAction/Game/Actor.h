@@ -11,16 +11,17 @@ class BoxCollider;
 
 enum class RectType
 {
-	ancor,
+	none,
 	attack,
-	damage
+	damage,
+	push
 };
 
 struct ActionRect
 {
 	RectType type;
 	Rect rc;
-	ActionRect() :type(RectType::ancor), rc(0, 0, 0, 0){}
+	ActionRect() :type(RectType::none), rc(0, 0, 0, 0){}
 	ActionRect(RectType t, Rect r) :type(t), rc(r){}
 };
 
@@ -67,8 +68,14 @@ public:
 
 	const Rect GetRect(const Rect& rec)const;
 
-	const Rect& GetCollider()const;
+	const Rect& GetCollider();
+
+	void DebagDraw();
 	virtual ~Actor();
+	virtual const Vector2f GetVelocity()const = 0;
+	virtual const Vector2f GetAccel()const = 0;
+	virtual void SetVelocity(Vector2f v) = 0;
+	virtual void SetAccel(Vector2f a) = 0;
 	virtual void Update(const Input&) = 0;
 	virtual void Draw() = 0;
 	virtual void PushBack(float x, float y) = 0;

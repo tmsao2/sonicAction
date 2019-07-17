@@ -41,31 +41,32 @@ void GameScene::Update(const Input& input)
 	_camera->Update();
 	_camera->SetRange(size);
 
-	auto viewrange = _camera->GetViewRange();
-	auto& blocks = _stage->Blocks();
-	for (auto& b : blocks)
+	
+	if (!_player->IsDying()&&!_player->IsDie())
 	{
-		auto& brect = b->GetCollider();
-		auto& prect = _player->GetCollider();
-		if (brect.Right() < viewrange.Left() || brect.Left() > viewrange.Right())
+		auto viewrange = _camera->GetViewRange();
+		auto& blocks = _stage->Blocks();
+		for (auto& b : blocks)
 		{
-			continue;
-		}
-		if (Collider::IsCollided(prect, brect))
-		{
-			auto w = min(prect.Right(), brect.Right()) - max(prect.Left(), brect.Left());
-			auto h = min(prect.Bottom(), brect.Bottom()) - max(prect.Top(), brect.Top());
-			auto size = Size(w, h);
+			auto& brect = b->GetCollider();
+			auto& prect = _player->GetCollider();
+			if (brect.Right() < viewrange.Left() || brect.Left() > viewrange.Right())
+			{
+				continue;
+			}
+			if (Collider::IsCollided(prect, brect))
+			{
+				auto w = min(prect.Right(), brect.Right()) - max(prect.Left(), brect.Left());
+				auto h = min(prect.Bottom(), brect.Bottom()) - max(prect.Top(), brect.Top());
+				auto size = Size(w, h);
 
-			Rect rc;
-			rc.center = prect.center - brect.center;
-			rc.size = size;
+				Rect rc;
+				rc.center = prect.center - brect.center;
+				rc.size = size;
 
-			b->OnCollision(&(*_player), rc);
+				b->OnCollision(&(*_player), rc);
+			}
 		}
-	}
-	if (!_player->IsDying())
-	{
 		if (_player->GetVelocity().y > 0)
 		{
 			float grad;
@@ -78,18 +79,19 @@ void GameScene::Update(const Input& input)
 			_camera->RemovePlayer(_player);
 		}
 	}
-	if(_player->IsDie())
-	{
-		_controller.ChangeScene(std::make_unique<GameScene>(_controller));
-	}
-	
-	for (auto actor : _actors) 
+
+	for (auto actor : _actors)
 	{
 		actor->Update(input);
 	}
 
 	_stage->Update();
 
+	if(_player->IsDie())
+	{
+		_controller.ChangeScene(std::make_unique<GameScene>(_controller));
+	}
+	
 	if (input.IsTriggered(0, COMMAND::OK))
 	{
 		_controller.ChangeScene(std::make_unique<ResultScene>(_controller));
@@ -107,6 +109,7 @@ void GameScene::Draw()
 	_stage->Draw();
 	for (auto actor : _actors) {
 		actor->Draw();
+		actor->DebagDraw();
 	}
 	DrawString(12, 0, "Game", 0xffffff);
 }

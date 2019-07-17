@@ -46,7 +46,10 @@ public:
 	void PushBack(float x, float y);
 	void Update(const Input& input)override final;
 	void Draw()override final;
-	Vector2f GetPosition()const;
-	Vector2f GetVelocity()const;
+	const Vector2f GetPosition()const;
+	const Vector2f GetVelocity()const;
+	const Vector2f GetAccel()const;
+	void SetVelocity(Vector2f v);
+	void SetAccel(Vector2f a);
 };
 

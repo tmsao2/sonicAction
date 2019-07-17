@@ -20,7 +20,7 @@ void Actor::ReadActFile(const char * filepath)
 	FileRead_read(&version, sizeof(version), actionH);
 	assert(version == 1.01f);
 
-	//ファイル名の数
+	//ファイル名のサイズ
 	int filenamesize = 0;
 	FileRead_read(&filenamesize, sizeof(filenamesize), actionH);
 
@@ -66,10 +66,14 @@ void Actor::ReadActFile(const char * filepath)
 			int actrcCnt = 0;
 			FileRead_read(&actrcCnt, sizeof(actrcCnt), actionH);
 
-			if (actrcCnt == 0) continue;
-			actInfo.cuts[i].actrects.resize(actrcCnt);
-
-			FileRead_read(&actInfo.cuts[i].actrects[0], actionCnt * sizeof(ActionRect), actionH);
+			if (actrcCnt > 0)
+			{
+				actInfo.cuts[i].actrects.resize(actrcCnt);
+				for (auto& actrect : actInfo.cuts[i].actrects)
+				{
+					FileRead_read(&actrect, sizeof(actrect), actionH);
+				}
+			}
 		}
 		_actionData.actInfo[actname] = actInfo;
 	}
@@ -118,14 +122,37 @@ const Rect Actor::GetRect(const Rect& rec) const
 	Rect rc = rec;
 	rc.size.w *= 3;
 	rc.size.h *= 3;
-	rc.center.x = _pos.x;
-	rc.center.y = _pos.y - rc.size.h/2;
+	auto offset = _isLeft ? rc.size.w : rc.size.w / 2;
+
+	rc.center.x = rc.center.x + _pos.x;
+	rc.center.y = rc.center.y + _pos.y-rc.size.h/4;
 	return rc;
 }
 
-const Rect& Actor::GetCollider()const
+const Rect& Actor::GetCollider()
 {
+	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& cut = actInfo.cuts[0];
+	_rect=GetRect(cut.actrects[0].rc);
 	return _rect;
+}
+
+void Actor::DebagDraw()
+{
+	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& cut = actInfo.cuts[0];
+
+	auto c = _camera.GetOffset();
+
+	for (ActionRect& act : cut.actrects) {
+		Rect rc = GetRect(act.rc);
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawBox(rc.Left()-c.x, rc.Top() - c.y, rc.Right()-c.x, rc.Bottom() - c.y, 0xff0000, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+		DrawBox(rc.Left() - c.x, rc.Top() - c.y, rc.Right() - c.x, rc.Bottom() - c.y, 0xff0000, false);
+	}
 }
 
 Actor::~Actor()

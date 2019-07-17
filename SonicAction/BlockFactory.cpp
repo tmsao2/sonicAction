@@ -5,7 +5,8 @@
 #include <DxLib.h>
 
 int _blockH = -1;
-constexpr int move_frame = 2;
+constexpr int fixed_block = 5;
+constexpr int move_frame = 120;
 
 class Brick :public Block{
 public:
@@ -36,22 +37,30 @@ public:
 
 	void OnCollision(Actor* actor, const Rect& rc)override 
 	{
+		auto vel = actor->GetVelocity();
+		auto accel = actor->GetAccel();
 		auto sz = Size(0, 0);
 		if (rc.Height() < rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
 				actor->OnGround(_rect.Top(),0);
+				accel.x = 0;
 			}
 			if (rc.center.y == 0)return;
+			vel.y = 0;
+			accel.y = 0;
 			sz.h = rc.Height()*(rc.center.y / abs(rc.center.y));
 		}
 		else
 		{
 			if (rc.center.x == 0)return;
 			sz.w = rc.Width()*(rc.center.x / abs(rc.center.x));
+			
 		}
-		actor->PushBack(sz.w, 0);
+		actor->SetVelocity(vel);
+		actor->SetAccel(accel);
+		actor->PushBack(sz.w, sz.h);
 	}
 
 };
@@ -62,49 +71,69 @@ private:
 	int _frame = 0;
 public:
 	Slide(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
-		Block(Rect(pos, Size(32, 32)), cam), _speed((int)runLength) {
+		Block(Rect(pos, Size(32* fixed_block, 32)), cam), _speed((int)runLength) {
 		_blockH = LoadGraph("img/blocks.png");
 	}
 
 	void Update()override
 	{
-		auto cnt = abs((++_frame / 60) % move_frame - move_frame / 2);
+		auto cnt = ++_frame%move_frame;
 		if (cnt == 0)
 		{
-			_rect.center.x += _speed;
+			_speed = _speed > 0 ? -_speed : -1*_speed;
 		}
-		else if (cnt == 1)
-		{
-			_rect.center.x -= _speed;
-		}
+		_rect.center.x += _speed;
 	}
 
 	void Draw()override
 	{
-		auto range = _camera.GetViewRange();
-		if (_rect.Right() < range.Left() || _rect.Left() > range.Right())
-		{
-			return;
-		}
 		auto c = _camera.GetOffset();
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < fixed_block; ++i)
 		{
+			auto range = _camera.GetViewRange();
+			if (_rect.Right() - _rect.Width() / fixed_block * (fixed_block - (i + 1)) < range.Left()
+				|| _rect.Left() + _rect.Width() / fixed_block * i > range.Right())
+			{
+				continue;
+			}
 			DrawRectExtendGraph(
-				_rect.Left() - c.x + _rect.Width()*i,
+				_rect.Left() + _rect.Width() / fixed_block * i - c.x,
 				_rect.Top() - c.y,
-				_rect.Right() - c.x + _rect.Width()*i,
+				_rect.Right()-_rect.Width()/ fixed_block * (fixed_block - (i+1)) - c.x,
 				_rect.Bottom() - c.y,
-				0, 16*7, 16, 16, _blockH, true);
+				0, 16 * 7, 16, 16, _blockH, true);
 		}
 	}
 
 	void OnCollision(Actor* actor, const Rect& rc)override
 	{
-		if (rc.center.y < 0)
+		auto vel = actor->GetVelocity();
+		auto accel = actor->GetAccel();
+		auto sz = Size(0, 0);
+		if (rc.Height() < rc.Width())
 		{
-			actor->OnGround(_rect.Top(), 0);
+			if (rc.center.y < 0)
+			{
+				actor->OnGround(_rect.Top(), 0);
+				actor->PushBack(_speed, 0);
+			}
+			if (rc.center.y == 0)return;
+			vel.y = 0;
+			accel.y = 0;
+			sz.h = rc.Height()*(rc.center.y / abs(rc.center.y));
 		}
+		else
+		{
+			if (rc.center.x == 0)return;
+			sz.w = rc.Width()*(rc.center.x / abs(rc.center.x));
+			vel.x = 0;
+			accel.x = 0;
+		}
+		actor->SetVelocity(vel);
+		actor->SetAccel(accel);
+		actor->PushBack(sz.w, sz.h);
 	}
+		
 };
 
 class Lift :public Block {
@@ -113,45 +142,67 @@ private:
 	int _frame=0;
 public:
 	Lift(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
-		Block(Rect(pos, Size(32, 32)), cam), _speed((int)runLength) {
+		Block(Rect(pos, Size(32*fixed_block, 32)), cam), _speed((int)runLength) {
 		_blockH = LoadGraph("img/blocks.png");
 	}
 
 	void Update()override
 	{
-		auto cnt = abs((++_frame / 60) % move_frame - move_frame / 2);
+		auto cnt = ++_frame%move_frame;
 		if (cnt == 0)
 		{
-			_rect.center.y += _speed;
+			_speed = _speed > 0 ? -_speed : -1 * _speed;
 		}
-		else if (cnt == 1)
-		{
-			_rect.center.y -= _speed;
-		}
+		_rect.center.y += _speed;
 	}
 
 	void Draw()override
 	{
-		auto range = _camera.GetViewRange();
-		if (_rect.Right() < range.Left() || _rect.Left() > range.Right())
-		{
-			return;
-		}
 		auto c = _camera.GetOffset();
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < fixed_block; ++i)
 		{
+			auto range = _camera.GetViewRange();
+			if (_rect.Right() - _rect.Width() / fixed_block * (fixed_block - (i + 1)) < range.Left()
+				|| _rect.Left() + _rect.Width() / fixed_block * i > range.Right())
+			{
+				continue;
+			}
 			DrawRectExtendGraph(
-				_rect.Left() - c.x + _rect.Width()*i,
-				_rect.Top() - c.y ,
-				_rect.Right() - c.x + _rect.Width()*i,
+				_rect.Left() + _rect.Width() / fixed_block * i - c.x,
+				_rect.Top() - c.y,
+				_rect.Right() - _rect.Width() / fixed_block * (fixed_block - (i + 1)) - c.x,
 				_rect.Bottom() - c.y,
-				16, 16*7, 16, 16, _blockH, true);
+				0, 16 * 7, 16, 16, _blockH, true);
 		}
 	}
 
 	void OnCollision(Actor* actor, const Rect& rc)override
 	{
-
+		auto vel = actor->GetVelocity();
+		auto accel = actor->GetAccel();
+		auto sz = Size(0, 0);
+		if (rc.Height() < rc.Width())
+		{
+			if (rc.center.y < 0)
+			{
+				actor->OnGround(_rect.Top(), 0);
+				actor->PushBack(0, _speed);
+			}
+			if (rc.center.y == 0)return;
+			vel.y = 0;
+			accel.y = 0;
+			sz.h = rc.Height()*(rc.center.y / abs(rc.center.y));
+		}
+		else
+		{
+			if (rc.center.x == 0)return;
+			sz.w = rc.Width()*(rc.center.x / abs(rc.center.x));
+			vel.x = 0;
+			accel.x = 0;
+		}
+		actor->SetVelocity(vel);
+		actor->SetAccel(accel);
+		actor->PushBack(sz.w, sz.h);
 	}
 };
 

@@ -2,8 +2,9 @@
 #include "../Input.h"
 #include "../Camera.h"
 #include "../Game.h"
+#include <iostream>
 
-constexpr float max_speed = 30.0f;
+constexpr float max_speed = 40.0f;
 constexpr float jump_power = 3.0f;
 
 Player::Player(const Camera & c):Actor(c)
@@ -114,20 +115,32 @@ void Player::Draw()
 	auto c = _camera.GetOffset();
 	auto pos = _pos - c;
 	DrawRectRotaGraph2(static_cast<int>(pos.x), static_cast<int>(pos.y), rc.Left(), rc.Top(), rc.Width(), rc.Height(),centerX,cut.center.y, 3.0f, _angle, _imgH, true, _isLeft);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	_rect = GetRect(rc);
-	DrawBox(_rect.Left()-c.x, _rect.Top()-c.y, _rect.Right()-c.x, _rect.Bottom()-c.y, 0xff0000, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	std::cout << pos.x << "," << pos.y << std::endl;
 }
 
-Vector2f Player::GetPosition() const
+const Vector2f Player::GetPosition() const
 {
 	return _pos;
 }
 
-Vector2f Player::GetVelocity() const
+const Vector2f Player::GetVelocity() const
 {
 	return _vel;
+}
+
+const Vector2f Player::GetAccel() const
+{
+	return _accel;
+}
+
+void Player::SetVelocity(Vector2f v)
+{
+	_vel = v;
+}
+
+void Player::SetAccel(Vector2f a)
+{
+	_accel = a;
 }
 
 
@@ -179,7 +192,7 @@ void Player::Accelerator(const Input & input)
 	auto sin = sinf(_angle);
 
 	_vel += _accel;
-	_vel.x += g * sin;
+	_vel.x += _isAerial ? g : g * sin;
 	_vel.y += g;
 	if (fabsf(_vel.x) > max_speed)
 	{
@@ -219,7 +232,6 @@ void Player::RunUpdate(const Input & input)
 
 void Player::JumpUpdate(const Input & input)
 {
-	_angle += _isLeft ? -0.4f : 0.4f;
 	if (_jumpframe > 0)
 	{
 		if (input.IsPressed(0, COMMAND::JUMP))
