@@ -131,15 +131,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ant.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Actor.cpp" />
+    <ClCompile Include="Game\Ant.cpp" />
+    <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\Player.cpp" />
+    <ClCompile Include="Game\Spawner.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -151,19 +152,19 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneController.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
-    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ant.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Actor.h" />
+    <ClInclude Include="Game\Ant.h" />
+    <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\Spawner.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Input.h" />
@@ -174,7 +175,6 @@
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneController.h" />
     <ClInclude Include="Scene\TitleScene.h" />
-    <ClInclude Include="Spawner.h" />
     <ClInclude Include="Stage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

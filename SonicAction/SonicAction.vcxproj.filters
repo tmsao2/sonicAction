@@ -78,14 +78,14 @@
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Game\Ant.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Spawner.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Game\Enemy.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Ant.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Game\Spawner.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,14 +143,14 @@
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Game\Ant.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Spawner.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Game\Enemy.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Ant.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Game\Spawner.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

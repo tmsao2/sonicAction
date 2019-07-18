@@ -9,6 +9,8 @@
 #include "../BackGround.h"
 #include "../Game/Actor.h"
 #include "../Game/Player.h"
+#include "../Game/Enemy.h"
+#include "../Game/Ant.h"
 #include "../BlockFactory.h"
 #include "../Collider.h"
 #include "SceneController.h"
@@ -18,8 +20,9 @@ GameScene::GameScene(SceneController& controller) :Scene(controller)
 {
 	auto size = Game::GetInstance().GetConfig().GetScreenSize();
 	_camera = std::make_unique<Camera>();
-	_player = std::make_shared<Player>(*_camera, size.w /2, size.h/2);
+	_player = std::make_shared<Player>(*_camera);
 	_actors.emplace_back(_player);
+	_actors.push_back(std::make_shared<Ant>(*_camera, *_player, 300, 300));
 	_bg = std::make_unique<BackGround>(*_camera);
 	_camera->AddPlayer(_player);
 	_ground = std::make_unique<Ground>(*_camera,*_player);
@@ -71,7 +74,7 @@ void GameScene::Update(const Input& input)
 		{
 			float grad;
 			float y = _ground->GetGroundY(grad);
-			_player->OnGround(y, grad);
+			_player->OnGround(grad, y);
 		}
 		if (_player->GetPosition().y >= _ground->GetDeadLine())
 		{

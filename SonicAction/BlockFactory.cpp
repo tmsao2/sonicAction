@@ -44,7 +44,7 @@ public:
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(_rect.Top(),0);
+				actor->OnGround(0, _rect.Top());
 				accel.x = 0;
 			}
 			if (rc.center.y == 0)return;
@@ -114,7 +114,7 @@ public:
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(_rect.Top(), 0);
+				actor->OnGround(0,_rect.Top());
 				actor->PushBack(_speed, 0);
 			}
 			if (rc.center.y == 0)return;
@@ -181,11 +181,12 @@ public:
 		auto vel = actor->GetVelocity();
 		auto accel = actor->GetAccel();
 		auto sz = Size(0, 0);
+
 		if (rc.Height() < rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(_rect.Top(), 0);
+				actor->OnGround(0, _rect.Top());
 				actor->PushBack(0, _speed);
 			}
 			if (rc.center.y == 0)return;

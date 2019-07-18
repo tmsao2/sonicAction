@@ -6,18 +6,37 @@
 
 constexpr float max_speed = 40.0f;
 constexpr float jump_power = 3.0f;
+constexpr int default_pos_x = 512;
+constexpr int default_pos_y = 400;
 
 Player::Player(const Camera & c):Actor(c)
 {
-	_imgH = LoadGraph("image/atlas.png");
+	ReadActFile("action/player.act");
+	_imgH = LoadGraph(_actionData.imgFilePath.c_str());
+	_jumpSE = LoadSoundMem("se/jump.wav");
+	_deadSE = LoadSoundMem("se/down.wav");
+	_pos = Vector2f(default_pos_x, default_pos_y);
+	_jumpframe = 0;
+	_isAerial = true;
 	_isLeft = false;
+	_angle = 0.0f;
+	_updater = &Player::NeutralUpdate;
+	ChangeAction("idle");
 }
 
 Player::Player(const Camera & c, const Vector2f p) :Actor(c,p)
 {
-	_imgH = LoadGraph("image/atlas.png");
+	ReadActFile("action/player.act");
+	_imgH = LoadGraph(_actionData.imgFilePath.c_str());
+	_jumpSE = LoadSoundMem("se/jump.wav");
+	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = p;
+	_jumpframe = 0;
+	_isAerial = true;
 	_isLeft = false;
+	_angle = 0.0f;
+	_updater = &Player::NeutralUpdate;
+	ChangeAction("idle");
 }
 
 Player::Player(const Camera & c, float x, float y):Actor(c,x,y)
@@ -64,16 +83,16 @@ void Player::HitBlock(int block)
 	}
 }
 
-void Player::OnGround(int groundline, float grad)
+void Player::OnGround(float grad, float adjustY)
 {
-	if (groundline == INT_MIN)
+	if (adjustY == INT_MIN)
 	{
 		return;
 	}
-	if (_pos.y > groundline)
+	if (_pos.y > adjustY)
 	{
 		_vel.y = 0;
-		_pos.y = groundline;
+		_pos.y = adjustY;
 		_angle = atanf(grad);
     	_isAerial = false;
 	}
@@ -118,27 +137,35 @@ void Player::Draw()
 	std::cout << pos.x << "," << pos.y << std::endl;
 }
 
-const Vector2f Player::GetPosition() const
+Vector2f Player::GetPosition() const
 {
 	return _pos;
 }
 
-const Vector2f Player::GetVelocity() const
+Vector2f Player::GetVelocity() const
 {
 	return _vel;
 }
 
-const Vector2f Player::GetAccel() const
+Vector2f Player::GetAccel() const
 {
 	return _accel;
 }
 
-void Player::SetVelocity(Vector2f v)
+const Rect& Player::GetCollider()
+{
+	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& cut = actInfo.cuts[0];
+	_rect = GetRect(cut.actrects[0].rc);
+	return _rect;
+}
+
+void Player::SetVelocity(const Vector2f& v)
 {
 	_vel = v;
 }
 
-void Player::SetAccel(Vector2f a)
+void Player::SetAccel(const Vector2f& a)
 {
 	_accel = a;
 }
@@ -192,7 +219,7 @@ void Player::Accelerator(const Input & input)
 	auto sin = sinf(_angle);
 
 	_vel += _accel;
-	_vel.x += _isAerial ? g : g * sin;
+	_vel.x += _isAerial ? 0 : g * sin;
 	_vel.y += g;
 	if (fabsf(_vel.x) > max_speed)
 	{

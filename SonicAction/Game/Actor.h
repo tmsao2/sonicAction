@@ -48,6 +48,8 @@ struct ActionData
 class Actor
 {
 protected:
+	int _imgH;
+	float _angle;
 	Vector2f _pos;
 	bool _isLeft;
 	Rect _rect;
@@ -68,17 +70,17 @@ public:
 
 	const Rect GetRect(const Rect& rec)const;
 
-	const Rect& GetCollider();
+	virtual const Rect& GetCollider() = 0;
 
 	void DebagDraw();
 	virtual ~Actor();
-	virtual const Vector2f GetVelocity()const = 0;
-	virtual const Vector2f GetAccel()const = 0;
-	virtual void SetVelocity(Vector2f v) = 0;
-	virtual void SetAccel(Vector2f a) = 0;
+	virtual Vector2f GetVelocity()const = 0;
+	virtual Vector2f GetAccel()const = 0;
+	virtual void SetVelocity(const Vector2f& v) = 0;
+	virtual void SetAccel(const Vector2f& a) = 0;
 	virtual void Update(const Input&) = 0;
 	virtual void Draw() = 0;
 	virtual void PushBack(float x, float y) = 0;
-	virtual void OnGround(int groundline, float grad) = 0;
+	virtual void OnGround(float grad,float adjustY = -1.0f) = 0;
 };
 

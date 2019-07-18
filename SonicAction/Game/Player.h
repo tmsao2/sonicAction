@@ -9,11 +9,9 @@ private:
 	Vector2f _vel = Vector2f(0.0f, 0.0f);
 	Vector2f _accel = Vector2f(0.0f, 0.0f);
 	int _jumpframe;
-	int _imgH;
 	int _jumpSE;
 	int _deadSE;
 	int _speed;
-	float _angle;
 	bool _isAerial;
 	bool Move(const Input & input);
 
@@ -41,15 +39,16 @@ public:
 	bool IsDie();
 	bool IsDying();
 	void HitBlock(int blocktop);
-	void OnGround(int groundline, float grad);
+	void OnGround(float grad, float adjustY = -1.0f);
 	void OnDead();
 	void PushBack(float x, float y);
 	void Update(const Input& input)override final;
 	void Draw()override final;
-	const Vector2f GetPosition()const;
-	const Vector2f GetVelocity()const;
-	const Vector2f GetAccel()const;
-	void SetVelocity(Vector2f v);
-	void SetAccel(Vector2f a);
+	Vector2f GetPosition()const;
+	Vector2f GetVelocity()const;
+	Vector2f GetAccel()const;
+	const Rect& GetCollider();
+	void SetVelocity(const Vector2f& v);
+	void SetAccel(const Vector2f& a);
 };
 
