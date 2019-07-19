@@ -48,7 +48,6 @@ struct ActionData
 class Actor
 {
 protected:
-	int _imgH;
 	float _angle;
 	Vector2f _pos;
 	bool _isLeft;
@@ -76,6 +75,7 @@ public:
 	virtual ~Actor();
 	virtual Vector2f GetVelocity()const = 0;
 	virtual Vector2f GetAccel()const = 0;
+	virtual Vector2f GetPosition()const = 0;
 	virtual void SetVelocity(const Vector2f& v) = 0;
 	virtual void SetAccel(const Vector2f& a) = 0;
 	virtual void Update(const Input&) = 0;

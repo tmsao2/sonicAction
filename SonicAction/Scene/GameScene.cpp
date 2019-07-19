@@ -25,7 +25,7 @@ GameScene::GameScene(SceneController& controller) :Scene(controller)
 	_actors.push_back(std::make_shared<Ant>(*_camera, *_player, 300, 300));
 	_bg = std::make_unique<BackGround>(*_camera);
 	_camera->AddPlayer(_player);
-	_ground = std::make_unique<Ground>(*_camera,*_player);
+	_ground = std::make_unique<Ground>(*_camera);
 	_stage = std::make_unique<Stage>(*_camera);
 	_stage->DataLoad("level/level1.fmf");
 	_stage->BuildGround(*_ground);
@@ -47,6 +47,7 @@ void GameScene::Update(const Input& input)
 	
 	if (!_player->IsDying()&&!_player->IsDie())
 	{
+		bool isOn = false;
 		auto viewrange = _camera->GetViewRange();
 		auto& blocks = _stage->Blocks();
 		for (auto& b : blocks)
@@ -66,16 +67,17 @@ void GameScene::Update(const Input& input)
 				Rect rc;
 				rc.center = prect.center - brect.center;
 				rc.size = size;
-
+				isOn = prect.center.y < brect.center.y;
 				b->OnCollision(&(*_player), rc);
 			}
 		}
-		if (_player->GetVelocity().y > 0)
+		if (_player->GetVelocity().y > 0 && !isOn)
 		{
 			float grad;
-			float y = _ground->GetGroundY(grad);
+			float y = _ground->GetGroundY(&(*_player), grad);
 			_player->OnGround(grad, y);
 		}
+		
 		if (_player->GetPosition().y >= _ground->GetDeadLine())
 		{
 			_player->OnDead();

@@ -7,8 +7,14 @@ class Ant :
 	public Enemy
 {
 private:
+	int _imgH;
 	Vector2f _pos;
 	Vector2f _vel;
+	void NormalUpdate();
+	void DeadUpdate();
+
+	void (Ant::*_updater)();
+
 public:
 	Ant(const Camera& camera,const Player& player,int x,int y);
 	~Ant();
@@ -27,6 +33,7 @@ public:
 
 	const Rect& GetCollider()override;
 
+	Vector2f GetPosition()const override;
 	void PushBack(float x, float y)override;
 	
 };

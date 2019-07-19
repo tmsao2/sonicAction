@@ -26,6 +26,8 @@ public:
 	virtual Vector2f GetAccel()const override = 0;
 	virtual void SetAccel(const Vector2f& a)override = 0;
 
+	virtual Vector2f GetPosition()const override = 0;
+
 	virtual void PushBack(float x, float y)override = 0;
 
 };

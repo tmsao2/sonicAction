@@ -87,12 +87,13 @@ void Player::OnGround(float grad, float adjustY)
 {
 	if (adjustY == INT_MIN)
 	{
+		_angle = 0;
 		return;
 	}
 	if (_pos.y > adjustY)
 	{
 		_vel.y = 0;
-		_pos.y = adjustY;
+		_pos.y = adjustY == -1 ? _pos.y : adjustY;
 		_angle = atanf(grad);
     	_isAerial = false;
 	}

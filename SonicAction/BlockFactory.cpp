@@ -1,16 +1,18 @@
 #include "BlockFactory.h"
 #include "Collider.h"
 #include "Game/Actor.h"
+#include "Game.h"
 #include "Camera.h"
 #include <DxLib.h>
 
 int _blockH = -1;
 constexpr int fixed_block = 5;
+constexpr int block_size = 32;
 constexpr int move_frame = 120;
 
 class Brick :public Block{
 public:
-	Brick(const Vector2& pos,const Camera& c) :Block(Rect(pos, Size(32,32)),c) {
+	Brick(const Vector2& pos,const Camera& c) :Block(Rect(pos, Size(block_size, block_size)),c) {
 		_blockH = LoadGraph("img/blocks.png");
 	}
 
@@ -40,11 +42,11 @@ public:
 		auto vel = actor->GetVelocity();
 		auto accel = actor->GetAccel();
 		auto sz = Size(0, 0);
-		if (rc.Height() < rc.Width())
+		if (rc.Height() <= rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0, _rect.Top());
+				actor->OnGround(0);
 				accel.x = 0;
 			}
 			if (rc.center.y == 0)return;
@@ -56,7 +58,8 @@ public:
 		{
 			if (rc.center.x == 0)return;
 			sz.w = rc.Width()*(rc.center.x / abs(rc.center.x));
-			
+			vel.x = 0;
+			accel.x = 0;
 		}
 		actor->SetVelocity(vel);
 		actor->SetAccel(accel);
@@ -71,7 +74,7 @@ private:
 	int _frame = 0;
 public:
 	Slide(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
-		Block(Rect(pos, Size(32* fixed_block, 32)), cam), _speed((int)runLength) {
+		Block(Rect(pos, Size(block_size* fixed_block, block_size)), cam), _speed((int)runLength) {
 		_blockH = LoadGraph("img/blocks.png");
 	}
 
@@ -114,7 +117,7 @@ public:
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0,_rect.Top());
+				actor->OnGround(0);
 				actor->PushBack(_speed, 0);
 			}
 			if (rc.center.y == 0)return;
@@ -142,7 +145,7 @@ private:
 	int _frame=0;
 public:
 	Lift(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
-		Block(Rect(pos, Size(32*fixed_block, 32)), cam), _speed((int)runLength) {
+		Block(Rect(pos, Size(block_size*fixed_block, block_size)), cam), _speed((int)runLength) {
 		_blockH = LoadGraph("img/blocks.png");
 	}
 
@@ -186,7 +189,7 @@ public:
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0, _rect.Top());
+				actor->OnGround(0);
 				actor->PushBack(0, _speed);
 			}
 			if (rc.center.y == 0)return;
@@ -209,32 +212,50 @@ public:
 
 class Pendulum :public Block{
 private:
-	int _speed;
+	int _length;
+	float _v = 0;
+	Vector2f _vel;
+	Vector2f _pivot;
 public:
 	Pendulum(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
-		Block(Rect(pos, Size(32, 32)), cam), _speed((int)runLength) {
+		Block(Rect(pos, Size(block_size*fixed_block, block_size)), cam), _length((int)runLength*block_size) {
 		_blockH = LoadGraph("img/blocks.png");
+		_pivot = Vector2f(_rect.Left(), _rect.Top());
+		_rect.center.x = _pivot.x + _length;
 	}
 
 	void Update()override
 	{
-		
+		auto g = Game::GetInstance().GetGravity();
+		auto tensionVec = Vector2f(_rect.center.x,_rect.center.y) - _pivot;
+		float theta = atan2f(tensionVec.y, tensionVec.x);
+		float a = g * 0.5*cos(theta);
+		_v += a;
+		_vel.x += _v * sin(theta);
+		_vel.y += _v * cos(theta);
+		_rect.center.x += _vel.x;
+		_rect.center.y += _vel.y;
 	}
 
 	void Draw()override
 	{
-		auto range = _camera.GetViewRange();
-		if (_rect.Right() < range.Left() || _rect.Left() > range.Right())
-		{
-			return;
-		}
 		auto c = _camera.GetOffset();
-		DrawRectExtendGraph(
-			_rect.Left() - c.x,
-			_rect.Top() - c.y,
-			_rect.Right() - c.x,
-			_rect.Bottom() - c.y,
-			32, 16, 16, 16, _blockH, true);
+		for (int i = 0; i < fixed_block; ++i)
+		{
+			auto range = _camera.GetViewRange();
+			if (_rect.Right() - _rect.Width() / fixed_block * (fixed_block - (i + 1)) < range.Left()
+				|| _rect.Left() + _rect.Width() / fixed_block * i > range.Right())
+			{
+				continue;
+			}
+			DrawRectExtendGraph(
+				_rect.Left() + _rect.Width() / fixed_block * i - c.x,
+				_rect.Top() - c.y,
+				_rect.Right() - _rect.Width() / fixed_block * (fixed_block - (i + 1)) - c.x,
+				_rect.Bottom() - c.y,
+				0, 16 * 7, 16, 16, _blockH, true);
+		}
+		DrawLine(_pivot.x, _pivot.y, _rect.center.x, _rect.center.y, 0xff0000);
 	}
 
 	void OnCollision(Actor* actor, const Rect& rc)override

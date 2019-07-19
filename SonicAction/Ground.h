@@ -2,8 +2,8 @@
 #include <vector>
 #include "Geometry.h"
 
-class Player;
 class Camera;
+class Actor;
 
 enum class EdgeType 
 {
@@ -29,16 +29,15 @@ private:
 	int _imgH;
 	int _lavaH,_lava2H;
 	const Camera& _camera;
-	Player& _player;
 	std::vector<Terrain> _terrain;
 
 	void DrawBottomGround(const Vector2f& s_pos, const Vector2f& e_pos, EdgeType t);
 
 public:
-	Ground(const Camera& c,Player& p);
+	Ground(const Camera& c);
 	~Ground();
 	void Draw();
-	int GetGroundY(float& grad)const;
+	int GetGroundY(Actor* actor,float& grad)const;
 	int GetDeadLine()const;
 	void AddSegment(const Segment& s,EdgeType t);
 	void AddSegment(const Vector2f& posA, const Vector2f& posB, EdgeType t);

@@ -5,7 +5,7 @@ class Player :
 	public Actor
 {
 private:
-
+	int _imgH;
 	Vector2f _vel = Vector2f(0.0f, 0.0f);
 	Vector2f _accel = Vector2f(0.0f, 0.0f);
 	int _jumpframe;

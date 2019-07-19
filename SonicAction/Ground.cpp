@@ -1,12 +1,12 @@
 #include "Ground.h"
 #include "Camera.h"
 #include "Game.h"
-#include "Game/Player.h"
+#include "Game/Actor.h"
 #include <algorithm>
 #include <DxLib.h>
 
 
-Ground::Ground(const Camera& c, Player& p) :_camera(c), _player(p)
+Ground::Ground(const Camera& c) :_camera(c)
 {
 	_imgH = LoadGraph("img/atlas0.png");
 	_lavaH = LoadGraph("img/lava.png");
@@ -126,9 +126,9 @@ void Ground::Draw()
 
 }
 
-int Ground::GetGroundY(float& grad)const
+int Ground::GetGroundY(Actor* actor,float& grad)const
 {
-	auto pos = _player.GetPosition();
+	auto pos = actor->GetPosition();
 
 
 	auto lambda= [pos](const Terrain& s) {
