@@ -19,6 +19,12 @@
     <Filter Include="Game">
       <UniqueIdentifier>{648568bd-31fb-4776-be53-2fa87b1d31a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{cb7c1467-8f77-4a23-9273-4ae5807c5e24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{2bf751bd-c562-42cc-b227-4448e450a8d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,18 +69,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="BlockFactory.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -86,6 +80,33 @@
     </ClCompile>
     <ClCompile Include="Game\Spawner.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\BackGround.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Ground.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Stage.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\BlockFactory.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="System\ActionLoader.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\FileSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\ImageLoader.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Loader.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\MapLoader.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,18 +149,6 @@
     <ClInclude Include="Camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -151,6 +160,33 @@
     </ClInclude>
     <ClInclude Include="Game\Spawner.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\BackGround.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Ground.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Stage.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\BlockFactory.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="System\ActionLoader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\FileSystem.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\ImageLoader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Loader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\MapLoader.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

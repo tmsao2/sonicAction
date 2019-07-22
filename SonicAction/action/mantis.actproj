@@ -1,0 +1,1 @@
+{"Version":1.01,"cuttable":[{"Key":"idle","Value":{"cuts":[{"addrects":[],"center":{"x":23,"y":29},"cutrect":{"height":32,"width":34,"x":0,"y":210},"duration":5}],"loop":false}},{"Key":"jump","Value":{"cuts":[{"addrects":[],"center":{"x":26,"y":28},"cutrect":{"height":36,"width":40,"x":0,"y":376},"duration":5}],"loop":false}}],"filename":"..\/img\/atlas.png"}

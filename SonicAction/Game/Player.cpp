@@ -90,7 +90,7 @@ void Player::OnGround(float grad, float adjustY)
 		_angle = 0;
 		return;
 	}
-	if (_pos.y > adjustY)
+	if (_pos.y > adjustY || adjustY == -1)
 	{
 		_vel.y = 0;
 		_pos.y = adjustY == -1 ? _pos.y : adjustY;

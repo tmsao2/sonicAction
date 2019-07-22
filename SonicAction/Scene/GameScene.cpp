@@ -4,16 +4,16 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../Camera.h"
-#include "../Ground.h"
-#include "../Stage.h"
-#include "../BackGround.h"
+#include "../Collider.h"
+#include "SceneController.h"
+#include "../Map/Ground.h"
+#include "../Map/Stage.h"
+#include "../Map/BackGround.h"
+#include "../Map/BlockFactory.h"
 #include "../Game/Actor.h"
 #include "../Game/Player.h"
 #include "../Game/Enemy.h"
 #include "../Game/Ant.h"
-#include "../BlockFactory.h"
-#include "../Collider.h"
-#include "SceneController.h"
 #include <DxLib.h>
 
 GameScene::GameScene(SceneController& controller) :Scene(controller)
