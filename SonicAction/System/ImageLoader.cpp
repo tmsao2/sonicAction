@@ -1,5 +1,5 @@
 #include "ImageLoader.h"
-
+#include <DxLib.h>
 
 
 ImageLoader::ImageLoader()
@@ -17,7 +17,20 @@ bool ImageLoader::Load(const char * path, Data & data)
 	auto it = _table.find(path);
 	if (it == _table.end())
 	{
-		img._handle=
+		img._handle = LoadGraph(path);
+		if (img._handle == -1)
+		{
+			return false;
+		}
+		else
+		{
+			_table[path] = img._handle;
+			return true;
+		}
+	}
+	else
+	{
+		img._handle = _table[path];
 	}
 	return false;
 }

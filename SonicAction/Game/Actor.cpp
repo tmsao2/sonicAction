@@ -31,7 +31,7 @@ void Actor::ReadActFile(const char * filepath)
 
 	//このアプリケーションからの相対パスに変換
 	auto ipos = imgfilepath.find_first_of("/") + 1;
-	_actionData.imgFilePath = imgfilepath.substr(ipos,imgfilepath.size());
+	_actionSet->imgFilePath = imgfilepath.substr(ipos,imgfilepath.size());
 
 	//アクション数
 	int actionCnt = 0;
@@ -75,7 +75,7 @@ void Actor::ReadActFile(const char * filepath)
 				}
 			}
 		}
-		_actionData.actInfo[actname] = actInfo;
+		_actionSet->actInfo[actname] = actInfo;
 	}
 
 
@@ -84,16 +84,16 @@ void Actor::ReadActFile(const char * filepath)
 
 bool Actor::AdvanceAnimetion()
 {
-	if ((signed)_frame < _actionData.actInfo[_currentAct].cuts[_nowidx].duration) {
+	if ((signed)_frame < _actionSet->actInfo[_currentAct].cuts[_nowidx].duration) {
 		_frame++;
 	}
 	else {
 		_frame = 0;
-		if (_nowidx < (signed)_actionData.actInfo[_currentAct].cuts.size() - 1) {
+		if (_nowidx < (signed)_actionSet->actInfo[_currentAct].cuts.size() - 1) {
 			++_nowidx;
 		}
 		else {
-			if (_actionData.actInfo[_currentAct].isLoop) {
+			if (_actionSet->actInfo[_currentAct].isLoop) {
 				_nowidx = 0;
 			}
 			else
@@ -107,14 +107,17 @@ bool Actor::AdvanceAnimetion()
 
 Actor::Actor(const Camera& c):_camera(c)
 {
+	_actionSet = std::make_unique<ActionSet>();
 }
 
 Actor::Actor(const Camera & c, const Vector2f p) : _camera(c),_pos(p)
 {
+	_actionSet = std::make_unique<ActionSet>();
 }
 
 Actor::Actor(const Camera & c, float x, float y) : _camera(c),_pos(x,y)
 {
+	_actionSet = std::make_unique<ActionSet>();
 }
 
 const Rect Actor::GetRect(const Rect& rec) const
@@ -131,7 +134,7 @@ const Rect Actor::GetRect(const Rect& rec) const
 
 void Actor::DebagDraw()
 {
-	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& actInfo = _actionSet->actInfo[_currentAct];
 	auto& cut = actInfo.cuts[0];
 
 	auto c = _camera.GetOffset();

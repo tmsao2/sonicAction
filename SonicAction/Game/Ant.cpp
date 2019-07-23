@@ -1,13 +1,16 @@
 #include "Ant.h"
 #include "../Camera.h"
 #include "../Game.h"
+#include "../System/FileSystem.h"
+#include "../System/ImageLoader.h"
 #include "Player.h"
 
 Ant::Ant(const Camera& camera, const Player& player,int x,int y):Enemy(camera,player,Vector2f(x,y))
 {
 	ReadActFile("action/ant.act");
-	_imgH = LoadGraph(_actionData.imgFilePath.c_str());
-	auto sign = player.GetPosition().x - x;
+	ImageData data;
+	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
+	_imgH = data.GetHandle();	auto sign = player.GetPosition().x - x;
 	sign = sign / abs(sign);
 	_vel.x = sign;
 	_pos = Vector2f(x, y);
@@ -47,7 +50,7 @@ void Ant::Update(const Input & input)
 
 void Ant::Draw()
 {
-	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& actInfo = _actionSet->actInfo[_currentAct];
 	auto& cut = actInfo.cuts[_nowidx];
 	auto rc = cut.rc;
 	auto centerX = _isLeft ? rc.Width() - cut.center.x : cut.center.x;
@@ -87,7 +90,7 @@ Vector2f Ant::GetAccel() const
 
 const Rect & Ant::GetCollider()
 {
-	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& actInfo = _actionSet->actInfo[_currentAct];
 	auto& cut = actInfo.cuts[0];
 	_rect = GetRect(cut.actrects[0].rc);
 	return _rect;

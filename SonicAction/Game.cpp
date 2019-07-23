@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Input.h"
 #include "Scene/SceneController.h"
+#include "System/FileSystem.h"
 #include <DxLib.h>
 
 
@@ -23,6 +24,11 @@ const Game::Config & Game::GetConfig() const
 }
 
 
+std::shared_ptr<FileSystem> Game::GetFileSystem()
+{
+	return _fileSystem;
+}
+
 float Game::GetGravity() const
 {
 	return 0.4f;
@@ -39,6 +45,7 @@ void Game::Init()
 	}
 	DxLib::SetDrawScreen(DX_SCREEN_BACK);
 	InputInit();
+	_fileSystem = std::make_shared<FileSystem>();
 }
 
 void Game::Run()

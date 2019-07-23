@@ -4,46 +4,11 @@
 #include <vector>
 #include <memory>
 #include "../Geometry.h"
+#include "../System/ActionLoader.h"
 
 class Camera;
 class Input;
 class BoxCollider;
-
-enum class RectType
-{
-	none,
-	attack,
-	damage,
-	push
-};
-
-struct ActionRect
-{
-	RectType type;
-	Rect rc;
-	ActionRect() :type(RectType::none), rc(0, 0, 0, 0){}
-	ActionRect(RectType t, Rect r) :type(t), rc(r){}
-};
-
-struct CutInfo 
-{
-	Rect rc;
-	Vector2 center;
-	int duration;
-	std::vector<ActionRect> actrects;
-};
-
-struct ActionInfo
-{
-	bool isLoop;
-	std::vector<CutInfo> cuts;
-};
-
-struct ActionData
-{
-	std::string imgFilePath;
-	std::map<std::string, ActionInfo> actInfo;
-};
 
 class Actor
 {
@@ -56,7 +21,7 @@ protected:
 	int _nowidx;
 	const Camera& _camera;
 	int _frame;
-	ActionData _actionData;
+	std::unique_ptr<ActionSet> _actionSet;
 
 	void ChangeAction(const char* act);
 	void ReadActFile(const char* filepath);

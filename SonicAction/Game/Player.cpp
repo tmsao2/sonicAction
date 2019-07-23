@@ -2,6 +2,8 @@
 #include "../Input.h"
 #include "../Camera.h"
 #include "../Game.h"
+#include "../System/FileSystem.h"
+#include "../System/ImageLoader.h"
 #include <iostream>
 
 constexpr float max_speed = 40.0f;
@@ -12,7 +14,9 @@ constexpr int default_pos_y = 400;
 Player::Player(const Camera & c):Actor(c)
 {
 	ReadActFile("action/player.act");
-	_imgH = LoadGraph(_actionData.imgFilePath.c_str());
+	ImageData data;
+	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
+	_imgH = data.GetHandle();
 	_jumpSE = LoadSoundMem("se/jump.wav");
 	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = Vector2f(default_pos_x, default_pos_y);
@@ -27,7 +31,9 @@ Player::Player(const Camera & c):Actor(c)
 Player::Player(const Camera & c, const Vector2f p) :Actor(c,p)
 {
 	ReadActFile("action/player.act");
-	_imgH = LoadGraph(_actionData.imgFilePath.c_str());
+	ImageData data;
+	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
+	_imgH = data.GetHandle();
 	_jumpSE = LoadSoundMem("se/jump.wav");
 	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = p;
@@ -42,7 +48,9 @@ Player::Player(const Camera & c, const Vector2f p) :Actor(c,p)
 Player::Player(const Camera & c, float x, float y):Actor(c,x,y)
 {
 	ReadActFile("action/player.act");
-	_imgH = LoadGraph(_actionData.imgFilePath.c_str());
+	ImageData data;
+	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
+	_imgH = data.GetHandle();
 	_jumpSE = LoadSoundMem("se/jump.wav");
 	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = Vector2f(x, y);
@@ -128,7 +136,7 @@ void Player::Update(const Input & input)
 
 void Player::Draw()
 {
-	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& actInfo = _actionSet->actInfo[_currentAct];
 	auto& cut = actInfo.cuts[_nowidx];
 	auto rc = cut.rc;
 	auto centerX = _isLeft ? rc.Width() - cut.center.x : cut.center.x;
@@ -155,7 +163,7 @@ Vector2f Player::GetAccel() const
 
 const Rect& Player::GetCollider()
 {
-	auto& actInfo = _actionData.actInfo[_currentAct];
+	auto& actInfo = _actionSet->actInfo[_currentAct];
 	auto& cut = actInfo.cuts[0];
 	_rect = GetRect(cut.actrects[0].rc);
 	return _rect;

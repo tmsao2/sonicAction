@@ -4,6 +4,7 @@
 
 class Input;
 class SceneController;
+class FileSystem;
 
 class Game
 {
@@ -25,6 +26,7 @@ private:
 
 	std::unique_ptr<Input> _input;
 	std::unique_ptr<SceneController> _sceneController;
+	std::shared_ptr<FileSystem> _fileSystem;
 
 public:
 	~Game();
@@ -45,6 +47,8 @@ public:
 
 		return s_Instance;
 	}
+
+	std::shared_ptr<FileSystem> GetFileSystem();
 
 	float GetGravity()const;
 	

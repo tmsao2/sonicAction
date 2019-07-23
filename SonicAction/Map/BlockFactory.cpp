@@ -3,6 +3,8 @@
 #include "../Game/Actor.h"
 #include "../Game.h"
 #include "../Camera.h"
+#include "../System/FileSystem.h"
+#include "../System/ImageLoader.h"
 #include <DxLib.h>
 
 int _blockH = -1;
@@ -13,7 +15,9 @@ constexpr int move_frame = 120;
 class Brick :public Block{
 public:
 	Brick(const Vector2& pos,const Camera& c) :Block(Rect(pos, Size(block_size, block_size)),c) {
-		_blockH = LoadGraph("img/blocks.png");
+		ImageData data;
+		Game::GetInstance().GetFileSystem()->Load("img/blocks.png", data);
+		_blockH = data.GetHandle();
 	}
 
 	void Update()override 
@@ -75,7 +79,9 @@ private:
 public:
 	Slide(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
 		Block(Rect(pos, Size(block_size* fixed_block, block_size)), cam), _speed((int)runLength) {
-		_blockH = LoadGraph("img/blocks.png");
+		ImageData data;
+		Game::GetInstance().GetFileSystem()->Load("img/blocks.png", data);
+		_blockH = data.GetHandle();
 	}
 
 	void Update()override
@@ -146,7 +152,9 @@ private:
 public:
 	Lift(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
 		Block(Rect(pos, Size(block_size*fixed_block, block_size)), cam), _speed((int)runLength) {
-		_blockH = LoadGraph("img/blocks.png");
+		ImageData data;
+		Game::GetInstance().GetFileSystem()->Load("img/blocks.png", data);
+		_blockH = data.GetHandle();
 	}
 
 	void Update()override
@@ -219,8 +227,9 @@ private:
 public:
 	Pendulum(const Vector2& pos, const Camera& cam, unsigned int runLength = 1) :
 		Block(Rect(pos, Size(block_size*fixed_block, block_size)), cam), _length((int)runLength*block_size) {
-		_blockH = LoadGraph("img/blocks.png");
-		_pivot = Vector2f(_rect.Left(), _rect.Top());
+		ImageData data;
+		Game::GetInstance().GetFileSystem()->Load("img/blocks.png", data);
+		_blockH = data.GetHandle();		_pivot = Vector2f(_rect.Left(), _rect.Top());
 		_rect.center.x = _pivot.x + _length;
 	}
 

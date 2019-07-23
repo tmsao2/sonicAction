@@ -49,6 +49,7 @@ struct Vector2f {
 	const VECTOR V_Cast() const;
 };
 
+
 Vector2f operator+(const Vector2f& lv, const Vector2f rv);
 Vector2f operator-(const Vector2f& lv, const Vector2f rv);
 Vector2f operator-(const Vector2f& lv, const float rv);
