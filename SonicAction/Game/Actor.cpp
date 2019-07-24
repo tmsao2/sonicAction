@@ -1,6 +1,9 @@
 #include "Actor.h"
+#include "../Game.h"
 #include "../Camera.h"
 #include "../Collider.h"
+#include "../System/FileSystem.h"
+#include "../System/ImageLoader.h"
 #include <assert.h>
 
 
@@ -11,75 +14,16 @@ void Actor::ChangeAction(const char* act)
 	_currentAct = act;
 }
 
-void Actor::ReadActFile(const char * filepath)
+void Actor::LoadAction(const char* filepath)
 {
-	int actionH = FileRead_open(filepath);
-
-	//バージョン読み込み
-	float version = 0.0f;
-	FileRead_read(&version, sizeof(version), actionH);
-	assert(version == 1.01f);
-
-	//ファイル名のサイズ
-	int filenamesize = 0;
-	FileRead_read(&filenamesize, sizeof(filenamesize), actionH);
-
-	//ファイル名
-	std::string imgfilepath;
-	imgfilepath.resize(filenamesize);
-	FileRead_read(&imgfilepath[0], filenamesize, actionH);
-
-	//このアプリケーションからの相対パスに変換
-	auto ipos = imgfilepath.find_first_of("/") + 1;
-	_actionSet->imgFilePath = imgfilepath.substr(ipos,imgfilepath.size());
-
-	//アクション数
-	int actionCnt = 0;
-	FileRead_read(&actionCnt, sizeof(actionCnt), actionH);
-
-	for (int idx = 0; idx < actionCnt; ++idx) 
-	{
-		//アクション名の数
-		int actnamesize = 0;
-		FileRead_read(&actnamesize, sizeof(actnamesize), actionH);
-
-		//アクション名
-		std::string actname;
-		actname.resize(actnamesize);
-		FileRead_read(&actname[0], actnamesize, actionH);
-
-		ActionInfo actInfo;
-
-		//ループ情報
-		FileRead_read(&actInfo.isLoop, sizeof(actInfo.isLoop), actionH);
-
-		//カット数
-		int cutCnt = 0;
-		FileRead_read(&cutCnt, sizeof(cutCnt), actionH);
-
-		//カットデータ
-		actInfo.cuts.resize(cutCnt);
-		for (int i = 0; i < cutCnt; ++i)
-		{
-			FileRead_read(&actInfo.cuts[i], sizeof(actInfo.cuts[i]) - sizeof(actInfo.cuts[i].actrects), actionH);
-
-			int actrcCnt = 0;
-			FileRead_read(&actrcCnt, sizeof(actrcCnt), actionH);
-
-			if (actrcCnt > 0)
-			{
-				actInfo.cuts[i].actrects.resize(actrcCnt);
-				for (auto& actrect : actInfo.cuts[i].actrects)
-				{
-					FileRead_read(&actrect, sizeof(actrect), actionH);
-				}
-			}
-		}
-		_actionSet->actInfo[actname] = actInfo;
-	}
-
-
-	FileRead_close(actionH);
+	ActionData act;
+	Game::GetInstance().GetFileSystem()->Load(filepath, act);
+	auto actdata = act.GetRawData();
+	std::string imgFilePath = "";
+	ActionData::BuildActionSet(act, *_actionSet, imgFilePath);
+	ImageData data;
+	Game::GetInstance().GetFileSystem()->Load(imgFilePath.c_str(), data);
+	_imgH = data.GetHandle();
 }
 
 bool Actor::AdvanceAnimetion()

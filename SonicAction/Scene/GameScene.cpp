@@ -16,6 +16,7 @@
 #include "../Game/Ant.h"
 #include <DxLib.h>
 
+
 GameScene::GameScene(SceneController& controller) :Scene(controller)
 {
 	auto size = Game::GetInstance().GetConfig().GetScreenSize();
@@ -38,50 +39,75 @@ GameScene::~GameScene()
 {
 }
 
+
+void GameScene::CheckActorCol()
+{
+	for (auto& actor : _actors)
+	{
+		if (actor == _player)
+		{
+			continue;
+		}
+		if (actor->IsDie())
+		{
+			continue;
+		}
+		auto prect = _player->GetCollider();
+		auto erect = actor->GetCollider();
+		if (Collider::IsCollided(prect, erect))
+		{
+			actor->OnCollision(*_player);
+		}
+	}
+}
+
 void GameScene::Update(const Input& input)
 {
 	auto size = Game::GetInstance().GetConfig().GetScreenSize();
 	_camera->Update();
 	_camera->SetRange(size);
 
-	
-	if (!_player->IsDying()&&!_player->IsDie())
+	for (auto& actor : _actors)
 	{
-		bool isOn = false;
-		auto viewrange = _camera->GetViewRange();
-		auto& blocks = _stage->Blocks();
-		for (auto& b : blocks)
+		if (!actor->IsDying() && !actor->IsDie())
 		{
-			auto& brect = b->GetCollider();
-			auto& prect = _player->GetCollider();
-			if (brect.Right() < viewrange.Left() || brect.Left() > viewrange.Right())
+			bool isOn = false;
+			auto viewrange = _camera->GetViewRange();
+			auto& blocks = _stage->Blocks();
+			for (auto& b : blocks)
 			{
-				continue;
-			}
-			if (Collider::IsCollided(prect, brect))
-			{
-				auto w = min(prect.Right(), brect.Right()) - max(prect.Left(), brect.Left());
-				auto h = min(prect.Bottom(), brect.Bottom()) - max(prect.Top(), brect.Top());
-				auto size = Size(w, h);
+				auto& brect = b->GetCollider();
+				auto& prect = actor->GetCollider();
+				if (brect.Right() < viewrange.Left() || brect.Left() > viewrange.Right())
+				{
+					continue;
+				}
+				if (Collider::IsCollided(prect, brect))
+				{
+					auto w = min(prect.Right(), brect.Right()) - max(prect.Left(), brect.Left());
+					auto h = min(prect.Bottom(), brect.Bottom()) - max(prect.Top(), brect.Top());
+					auto size = Size(w, h);
 
-				Rect rc;
-				rc.center = prect.center - brect.center;
-				rc.size = size;
-				isOn = prect.center.y < brect.center.y;
-				b->OnCollision(&(*_player), rc);
+					Rect rc;
+					rc.center = prect.center - brect.center;
+					rc.size = size;
+					isOn = prect.center.y < brect.center.y;
+					b->OnCollision(&(*_player), rc);
+				}
 			}
-		}
-		if (_player->GetVelocity().y > 0 && !isOn)
-		{
-			float grad;
-			float y = _ground->GetGroundY(&(*_player), grad);
-			_player->OnGround(grad, y);
-		}
-		
-		if (_player->GetPosition().y >= _ground->GetDeadLine())
-		{
-			_player->OnDead();
-			_camera->RemovePlayer(_player);
+
+			if (actor->GetVelocity().y > 0 && !isOn)
+			{
+				float grad;
+				float y = _ground->GetGroundY(&(*actor), grad);
+				actor->OnGround(grad, y);
+			}
+
+			if (_player->GetPosition().y >= _ground->GetDeadLine())
+			{
+				_player->OnDead();
+				_camera->RemovePlayer(_player);
+			}
 		}
 	}
 

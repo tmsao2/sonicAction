@@ -17,6 +17,7 @@ public:
 
 	virtual void OnGround(float grad, float adjustY = -1.0f)override = 0;
 	virtual void OnDead() = 0;
+	virtual void OnCollision(Actor& actor)override;
 
 	virtual const Rect& GetCollider() = 0;
 

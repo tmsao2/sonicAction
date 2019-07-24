@@ -6,13 +6,16 @@
 #include "../Geometry.h"
 #include "../System/ActionLoader.h"
 
+
 class Camera;
 class Input;
 class BoxCollider;
+class ActionLoader;
 
 class Actor
 {
 protected:
+	int _imgH;
 	float _angle;
 	Vector2f _pos;
 	bool _isLeft;
@@ -24,7 +27,7 @@ protected:
 	std::unique_ptr<ActionSet> _actionSet;
 
 	void ChangeAction(const char* act);
-	void ReadActFile(const char* filepath);
+	void LoadAction(const char* filepath);
 	bool AdvanceAnimetion();
 
 public:
@@ -46,6 +49,10 @@ public:
 	virtual void Update(const Input&) = 0;
 	virtual void Draw() = 0;
 	virtual void PushBack(float x, float y) = 0;
+	virtual bool IsDie() = 0;
+	virtual bool IsDying() = 0;
+	virtual void OnDead() = 0;
 	virtual void OnGround(float grad,float adjustY = -1.0f) = 0;
+	virtual void OnCollision(Actor& actor) = 0;
 };
 

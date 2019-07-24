@@ -7,11 +7,11 @@ class Ant :
 	public Enemy
 {
 private:
-	int _imgH;
 	Vector2f _pos;
 	Vector2f _vel;
 	void NormalUpdate();
-	void DeadUpdate();
+	void DyingUpdate();
+	void DieUpdate();
 
 	void (Ant::*_updater)();
 
@@ -24,6 +24,9 @@ public:
 
 	void OnGround(float grad, float adjustY = -1.0f)override;
 	void OnDead()override;
+
+	bool IsDie()override;
+	bool IsDying()override;
 
 	Vector2f GetVelocity()const override;
 	void SetVelocity(const Vector2f& v)override;

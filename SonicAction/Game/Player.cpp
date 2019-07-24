@@ -1,7 +1,7 @@
 #include "Player.h"
+#include "../Game.h"
 #include "../Input.h"
 #include "../Camera.h"
-#include "../Game.h"
 #include "../System/FileSystem.h"
 #include "../System/ImageLoader.h"
 #include <iostream>
@@ -13,10 +13,8 @@ constexpr int default_pos_y = 400;
 
 Player::Player(const Camera & c):Actor(c)
 {
-	ReadActFile("action/player.act");
-	ImageData data;
-	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
-	_imgH = data.GetHandle();
+
+	LoadAction("action/player.act");
 	_jumpSE = LoadSoundMem("se/jump.wav");
 	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = Vector2f(default_pos_x, default_pos_y);
@@ -30,10 +28,7 @@ Player::Player(const Camera & c):Actor(c)
 
 Player::Player(const Camera & c, const Vector2f p) :Actor(c,p)
 {
-	ReadActFile("action/player.act");
-	ImageData data;
-	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
-	_imgH = data.GetHandle();
+	LoadAction("action/player.act");
 	_jumpSE = LoadSoundMem("se/jump.wav");
 	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = p;
@@ -47,10 +42,7 @@ Player::Player(const Camera & c, const Vector2f p) :Actor(c,p)
 
 Player::Player(const Camera & c, float x, float y):Actor(c,x,y)
 {
-	ReadActFile("action/player.act");
-	ImageData data;
-	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
-	_imgH = data.GetHandle();
+	LoadAction("action/player.act");
 	_jumpSE = LoadSoundMem("se/jump.wav");
 	_deadSE = LoadSoundMem("se/down.wav");
 	_pos = Vector2f(x, y);
@@ -82,15 +74,6 @@ bool Player::IsDying()
 	return _updater == &Player::DyingUpdate;
 }
 
-void Player::HitBlock(int block)
-{
-	if (_vel.y < 0)
-	{
-		_vel.y = 0;
-		_pos.y = _rect.size.h + block;
-	}
-}
-
 void Player::OnGround(float grad, float adjustY)
 {
 	if (adjustY == INT_MIN)
@@ -118,6 +101,10 @@ void Player::OnDead()
 	PlaySoundMem(_deadSE, DX_PLAYTYPE_BACK);
 	ChangeAction("damage");
 	_updater = &Player::DyingUpdate;
+}
+
+void Player::OnCollision(Actor & actor)
+{
 }
 
 void Player::PushBack(float x, float y)

@@ -38,7 +38,6 @@ struct ActionInfo
 
 struct ActionSet
 {
-	std::string imgFilePath;
 	std::map<std::string, ActionInfo> actInfo;
 };
 
@@ -62,6 +61,6 @@ private:
 	std::vector<unsigned char>* _data;
 public:
 	std::vector<unsigned char>* GetRawData();
-	void ReadData(void* inDst, size_t bytenum, size_t& cursor, ActionData& act);
-	void BuildActionSet(const ActionData& actdata, ActionSet& actset, std::string& imgpath);
+	static void ReadData(void* inDst, size_t bytenum, size_t& cursor, ActionData& act);
+	static void BuildActionSet(ActionData& actdata, ActionSet& actset, std::string& imgpath);
 };

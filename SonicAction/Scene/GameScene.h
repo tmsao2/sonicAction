@@ -21,6 +21,9 @@ private:
 	std::unique_ptr<Camera> _camera;
 	std::unique_ptr<Ground> _ground;
 	std::unique_ptr<Stage> _stage;
+	void CheckActorCol();
+
+
 public:
 	GameScene(SceneController& controller);
 	~GameScene();

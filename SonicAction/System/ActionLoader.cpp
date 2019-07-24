@@ -38,73 +38,69 @@ void ActionData::ReadData(void * inDst, size_t bytenum, size_t & cursor, ActionD
 	cursor += bytenum;
 }
 
-void ActionData::BuildActionSet(const ActionData & actdata, ActionSet & actset, std::string & imgpath)
+void ActionData::BuildActionSet(ActionData & actdata, ActionSet & actset, std::string & imgpath)
 {
 	
-	//int actionH = FileRead_open(filepath);
+	size_t cursor=0;
 
-	////バージョン読み込み
-	//float version = 0.0f;
-	//FileRead_read(&version, sizeof(version), actionH);
+	//バージョン読み込み
+	float version = 0.0f;
+	ReadData(&version, sizeof(version), cursor, actdata);
 
-	////ファイル名のサイズ
-	//int filenamesize = 0;
-	//FileRead_read(&filenamesize, sizeof(filenamesize), actionH);
+	//ファイル名のサイズ
+	int filenamesize = 0;
+	ReadData(&filenamesize, sizeof(filenamesize), cursor, actdata);
 
-	////ファイル名
-	//std::string imgfilepath;
-	//imgfilepath.resize(filenamesize);
-	//FileRead_read(&imgfilepath[0], filenamesize, actionH);
+	//ファイル名
+	imgpath.resize(filenamesize);
+	ReadData(&imgpath[0], filenamesize, cursor, actdata);
 
-	////このアプリケーションからの相対パスに変換
-	//auto ipos = imgfilepath.find_first_of("/") + 1;
-	//_actionData.imgFilePath = imgfilepath.substr(ipos, imgfilepath.size());
+	//このアプリケーションからの相対パスに変換
+	auto ipos = imgpath.find_first_of("/") + 1;
+	imgpath = imgpath.substr(ipos, imgpath.size());
 
-	////アクション数
-	//int actionCnt = 0;
-	//FileRead_read(&actionCnt, sizeof(actionCnt), actionH);
+	//アクション数
+	int actionCnt = 0;
+	ReadData(&actionCnt, sizeof(actionCnt), cursor, actdata);
 
-	//for (int idx = 0; idx < actionCnt; ++idx)
-	//{
-	//	//アクション名の数
-	//	int actnamesize = 0;
-	//	FileRead_read(&actnamesize, sizeof(actnamesize), actionH);
+	for (int idx = 0; idx < actionCnt; ++idx)
+	{
+		//アクション名の数
+		int actnamesize = 0;
+		ReadData(&actnamesize, sizeof(actnamesize), cursor, actdata);
 
-	//	//アクション名
-	//	std::string actname;
-	//	actname.resize(actnamesize);
-	//	FileRead_read(&actname[0], actnamesize, actionH);
+		//アクション名
+		std::string actname;
+		actname.resize(actnamesize);
+		ReadData(&actname[0], actnamesize, cursor, actdata);
 
-	//	ActionInfo actInfo;
+		ActionInfo actInfo;
 
-	//	//ループ情報
-	//	FileRead_read(&actInfo.isLoop, sizeof(actInfo.isLoop), actionH);
+		//ループ情報
+		ReadData(&actInfo.isLoop, sizeof(actInfo.isLoop), cursor, actdata);
 
-	//	//カット数
-	//	int cutCnt = 0;
-	//	FileRead_read(&cutCnt, sizeof(cutCnt), actionH);
+		//カット数
+		int cutCnt = 0;
+		ReadData(&cutCnt, sizeof(cutCnt), cursor, actdata);
 
-	//	//カットデータ
-	//	actInfo.cuts.resize(cutCnt);
-	//	for (int i = 0; i < cutCnt; ++i)
-	//	{
-	//		FileRead_read(&actInfo.cuts[i], sizeof(actInfo.cuts[i]) - sizeof(actInfo.cuts[i].actrects), actionH);
+		//カットデータ
+		actInfo.cuts.resize(cutCnt);
+		for (int i = 0; i < cutCnt; ++i)
+		{
+			ReadData(&actInfo.cuts[i], sizeof(actInfo.cuts[i]) - sizeof(actInfo.cuts[i].actrects), cursor, actdata);
 
-	//		int actrcCnt = 0;
-	//		FileRead_read(&actrcCnt, sizeof(actrcCnt), actionH);
+			int actrcCnt = 0;
+			ReadData(&actrcCnt, sizeof(actrcCnt), cursor, actdata);
 
-	//		if (actrcCnt > 0)
-	//		{
-	//			actInfo.cuts[i].actrects.resize(actrcCnt);
-	//			for (auto& actrect : actInfo.cuts[i].actrects)
-	//			{
-	//				FileRead_read(&actrect, sizeof(actrect), actionH);
-	//			}
-	//		}
-	//	}
-	//	_actionData.actInfo[actname] = actInfo;
-	//}
-
-
-	//FileRead_close(actionH);
+			if (actrcCnt > 0)
+			{
+				actInfo.cuts[i].actrects.resize(actrcCnt);
+				for (auto& actrect : actInfo.cuts[i].actrects)
+				{
+					ReadData(&actrect, sizeof(actrect), cursor, actdata);
+				}
+			}
+		}
+		actset.actInfo[actname] = actInfo;
+	}
 }

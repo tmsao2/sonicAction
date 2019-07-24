@@ -7,10 +7,8 @@
 
 Ant::Ant(const Camera& camera, const Player& player,int x,int y):Enemy(camera,player,Vector2f(x,y))
 {
-	ReadActFile("action/ant.act");
-	ImageData data;
-	Game::GetInstance().GetFileSystem()->Load(_actionSet->imgFilePath.c_str(), data);
-	_imgH = data.GetHandle();	auto sign = player.GetPosition().x - x;
+	LoadAction("action/ant.act");
+	auto sign = player.GetPosition().x - x;
 	sign = sign / abs(sign);
 	_vel.x = sign;
 	_pos = Vector2f(x, y);
@@ -37,9 +35,16 @@ void Ant::NormalUpdate()
 	}
 }
 
-void Ant::DeadUpdate()
+void Ant::DyingUpdate()
 {
+
 }
+
+void Ant::DieUpdate()
+{
+
+}
+
 
 void Ant::Update(const Input & input)
 {
@@ -76,6 +81,18 @@ void Ant::OnGround(float grad, float adjustY)
 
 void Ant::OnDead()
 {
+	if (IsDie() || IsDying())return;
+	_updater = &Ant::DyingUpdate;
+}
+
+bool Ant::IsDie()
+{
+	return _updater == &Ant::DieUpdate;
+}
+
+bool Ant::IsDying()
+{
+	return _updater == &Ant::DyingUpdate;
 }
 
 Vector2f Ant::GetVelocity() const

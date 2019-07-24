@@ -5,7 +5,6 @@ class Player :
 	public Actor
 {
 private:
-	int _imgH;
 	Vector2f _vel = Vector2f(0.0f, 0.0f);
 	Vector2f _accel = Vector2f(0.0f, 0.0f);
 	int _jumpframe;
@@ -38,9 +37,9 @@ public:
 	bool IsAerial();
 	bool IsDie();
 	bool IsDying();
-	void HitBlock(int blocktop);
 	void OnGround(float grad, float adjustY = -1.0f);
 	void OnDead();
+	void OnCollision(Actor& actor);
 	void PushBack(float x, float y);
 	void Update(const Input& input)override final;
 	void Draw()override final;
