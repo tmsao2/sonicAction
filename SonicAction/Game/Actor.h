@@ -15,6 +15,8 @@ class ActionLoader;
 class Actor
 {
 protected:
+	Vector2f _vel = Vector2f(0.0f, 0.0f);
+	Vector2f _accel = Vector2f(0.0f, 0.0f);
 	int _imgH;
 	float _angle;
 	Vector2f _pos;
@@ -37,7 +39,7 @@ public:
 
 	const Rect GetRect(const Rect& rec)const;
 
-	virtual const Rect& GetCollider() = 0;
+	const Rect& GetCollider();
 
 	void DebagDraw();
 	virtual ~Actor();

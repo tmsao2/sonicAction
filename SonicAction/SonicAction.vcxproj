@@ -137,6 +137,7 @@
     <ClCompile Include="Game\Actor.cpp" />
     <ClCompile Include="Game\Ant.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
+    <ClCompile Include="Game\OnceSpawner.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Spawner.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Game\Actor.h" />
     <ClInclude Include="Game\Ant.h" />
     <ClInclude Include="Game\Enemy.h" />
+    <ClInclude Include="Game\OnceSpawner.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\Spawner.h" />
     <ClInclude Include="Geometry.h" />

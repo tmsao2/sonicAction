@@ -14,6 +14,7 @@ Ant::Ant(const Camera& camera, const Player& player,int x,int y):Enemy(camera,pl
 	_pos = Vector2f(x, y);
 	_angle = 0;
 	_isLeft = true;
+	_isReverse = false;
 	ChangeAction("idle");
 	_updater = &Ant::NormalUpdate;
 }
@@ -24,8 +25,7 @@ Ant::~Ant()
 
 void Ant::NormalUpdate()
 {
-	auto g = Game::GetInstance().GetGravity();
-	_vel.y += g;
+	_vel += _accel;
 	auto sign = _player.GetPosition().x - _pos.x;
 	if (abs(sign) > 50)
 	{
@@ -37,7 +37,12 @@ void Ant::NormalUpdate()
 
 void Ant::DyingUpdate()
 {
+	_vel += _accel;
+	auto h = Game::GetInstance().GetConfig().GetScreenSize().h;
 
+	if (_pos.y - 200 - _camera.GetOffset().y > h) {
+		_updater = &Ant::DieUpdate;
+	}
 }
 
 void Ant::DieUpdate()
@@ -49,6 +54,8 @@ void Ant::DieUpdate()
 void Ant::Update(const Input & input)
 {
 	_pos += _vel;
+	auto g = Game::GetInstance().GetGravity();
+	_vel.y += g;
 	AdvanceAnimetion();
 	(this->*_updater)();
 }
@@ -61,7 +68,7 @@ void Ant::Draw()
 	auto centerX = _isLeft ? rc.Width() - cut.center.x : cut.center.x;
 	auto c = _camera.GetOffset();
 	auto pos = _pos - c;
-	DrawRectRotaGraph2(static_cast<int>(pos.x), static_cast<int>(pos.y), rc.Left(), rc.Top(), rc.Width(), rc.Height(), centerX, cut.center.y, 3.0f, _angle, _imgH, true, _isLeft);
+	DrawRectRotaGraph2(static_cast<int>(pos.x), static_cast<int>(pos.y), rc.Left(), rc.Top(), rc.Width(), rc.Height(), centerX, cut.center.y, 3.0f, _angle, _imgH, true, _isLeft, _isReverse);
 
 }
 
@@ -82,6 +89,12 @@ void Ant::OnGround(float grad, float adjustY)
 void Ant::OnDead()
 {
 	if (IsDie() || IsDying())return;
+	_angle = 0.0f;
+	_vel.x = 0.0f;
+	_vel.y = -5.0f;
+	_accel.x = 0.0f;
+	_accel.y = 0.1f;
+	_isReverse = true;
 	_updater = &Ant::DyingUpdate;
 }
 
@@ -102,7 +115,7 @@ Vector2f Ant::GetVelocity() const
 
 Vector2f Ant::GetAccel() const
 {
-	return Vector2f();
+	return _accel;
 }
 
 const Rect & Ant::GetCollider()

@@ -7,8 +7,6 @@ class Ant :
 	public Enemy
 {
 private:
-	Vector2f _pos;
-	Vector2f _vel;
 	void NormalUpdate();
 	void DyingUpdate();
 	void DieUpdate();

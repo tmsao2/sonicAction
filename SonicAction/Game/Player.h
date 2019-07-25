@@ -5,8 +5,6 @@ class Player :
 	public Actor
 {
 private:
-	Vector2f _vel = Vector2f(0.0f, 0.0f);
-	Vector2f _accel = Vector2f(0.0f, 0.0f);
 	int _jumpframe;
 	int _jumpSE;
 	int _deadSE;

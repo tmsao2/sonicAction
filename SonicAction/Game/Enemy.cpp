@@ -16,7 +16,7 @@ void Enemy::OnCollision(Actor & actor)
 	if (_pos.y > actor.GetPosition().y)
 	{
 		auto v = GetVelocity();
-		actor.SetVelocity(Vector2f(v.x, -15.0f));
+		actor.SetVelocity(Vector2f(v.x, -8.0f));
 		this->OnDead();
 	}
 	else

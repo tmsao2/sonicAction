@@ -40,24 +40,51 @@ GameScene::~GameScene()
 }
 
 
-void GameScene::CheckActorCol()
+void GameScene::CheckActorCol(std::shared_ptr<Actor> actor)
 {
-	for (auto& actor : _actors)
+	auto prect = _player->GetCollider();
+	auto erect = actor->GetCollider();
+	if (Collider::IsCollided(prect, erect))
 	{
-		if (actor == _player)
+		actor->OnCollision(*_player);
+	}
+}
+
+void GameScene::CheckBlockCol(std::shared_ptr<Actor> actor)
+{
+	bool isOn = false;
+	auto viewrange = _camera->GetViewRange();
+	auto& blocks = _stage->Blocks();
+	for (auto& b : blocks)
+	{
+		auto& brect = b->GetCollider();
+		auto& prect = actor->GetCollider();
+		if (brect.Right() < viewrange.Left() || brect.Left() > viewrange.Right())
 		{
 			continue;
 		}
-		if (actor->IsDie())
+		if (Collider::IsCollided(prect, brect))
 		{
-			continue;
+			auto w = min(prect.Right(), brect.Right()) - max(prect.Left(), brect.Left());
+			auto h = min(prect.Bottom(), brect.Bottom()) - max(prect.Top(), brect.Top());
+			auto size = Size(w, h);
+
+			Rect rc;
+			rc.center = prect.center - brect.center;
+			rc.size = size;
+			isOn = prect.center.y < brect.center.y;
+			b->OnCollision(&(*_player), rc);
 		}
-		auto prect = _player->GetCollider();
-		auto erect = actor->GetCollider();
-		if (Collider::IsCollided(prect, erect))
-		{
-			actor->OnCollision(*_player);
-		}
+	}
+}
+
+void GameScene::CheckGround(std::shared_ptr<Actor> actor)
+{
+	if (actor->GetVelocity().y > 0)
+	{
+		float grad;
+		float y = _ground->GetGroundY(&(*actor), grad);
+		actor->OnGround(grad, y);
 	}
 }
 
@@ -69,44 +96,29 @@ void GameScene::Update(const Input& input)
 
 	for (auto& actor : _actors)
 	{
-		if (!actor->IsDying() && !actor->IsDie())
+		if (actor == _player)
 		{
-			bool isOn = false;
-			auto viewrange = _camera->GetViewRange();
-			auto& blocks = _stage->Blocks();
-			for (auto& b : blocks)
+			if (!_player->IsDying() && !_player->IsDie())
 			{
-				auto& brect = b->GetCollider();
-				auto& prect = actor->GetCollider();
-				if (brect.Right() < viewrange.Left() || brect.Left() > viewrange.Right())
-				{
-					continue;
-				}
-				if (Collider::IsCollided(prect, brect))
-				{
-					auto w = min(prect.Right(), brect.Right()) - max(prect.Left(), brect.Left());
-					auto h = min(prect.Bottom(), brect.Bottom()) - max(prect.Top(), brect.Top());
-					auto size = Size(w, h);
-
-					Rect rc;
-					rc.center = prect.center - brect.center;
-					rc.size = size;
-					isOn = prect.center.y < brect.center.y;
-					b->OnCollision(&(*_player), rc);
-				}
+				CheckBlockCol(_player);
+				CheckGround(_player);
 			}
-
-			if (actor->GetVelocity().y > 0 && !isOn)
-			{
-				float grad;
-				float y = _ground->GetGroundY(&(*actor), grad);
-				actor->OnGround(grad, y);
-			}
-
 			if (_player->GetPosition().y >= _ground->GetDeadLine())
 			{
 				_player->OnDead();
 				_camera->RemovePlayer(_player);
+			}
+		}
+		else
+		{
+			if (!actor->IsDying() && !actor->IsDie())
+			{
+				CheckBlockCol(actor);
+				if (!_player->IsDying() && !_player->IsDie())
+				{
+					CheckActorCol(actor);
+				}
+				CheckGround(actor);
 			}
 		}
 	}

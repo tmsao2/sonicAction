@@ -108,6 +108,9 @@
     <ClCompile Include="System\MapLoader.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Game\OnceSpawner.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="System\MapLoader.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\OnceSpawner.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

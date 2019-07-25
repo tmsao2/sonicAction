@@ -4,10 +4,10 @@
 
 Input::Input()
 {
-	_inputTable.resize(GetJoypadCount());
-	_currentInputState.resize(GetJoypadCount());
-	_oldInputState.resize(GetJoypadCount());
-	padstate.resize(GetJoypadCount());
+	_inputTable.resize(GetJoypadCount()+1);
+	_currentInputState.resize(GetJoypadCount()+1);
+	_oldInputState.resize(GetJoypadCount()+1);
+	padstate.resize(GetJoypadCount()+1);
 }
 
 

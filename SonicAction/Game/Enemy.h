@@ -8,6 +8,7 @@ class Enemy :
 {
 protected:
 	const Player& _player;
+	bool _isReverse;
 public:
 	Enemy(const Camera& camera,const Player& player,const Vector2f& pos);
 	virtual ~Enemy();

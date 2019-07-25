@@ -76,6 +76,14 @@ const Rect Actor::GetRect(const Rect& rec) const
 	return rc;
 }
 
+const Rect & Actor::GetCollider()
+{
+	auto& actInfo = _actionSet->actInfo[_currentAct];
+	auto& cut = actInfo.cuts[0];
+	_rect = GetRect(cut.actrects[0].rc);
+	return _rect;
+}
+
 void Actor::DebagDraw()
 {
 	auto& actInfo = _actionSet->actInfo[_currentAct];
