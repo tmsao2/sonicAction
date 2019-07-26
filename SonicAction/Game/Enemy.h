@@ -2,13 +2,16 @@
 #include "Actor.h"
 
 class Player;
+class Spawner;
 
 class Enemy :
 	public Actor
 {
+	friend Spawner;
 protected:
 	const Player& _player;
 	bool _isReverse;
+	virtual std::shared_ptr<Enemy> MakeClone() = 0;
 public:
 	Enemy(const Camera& camera,const Player& player,const Vector2f& pos);
 	virtual ~Enemy();
@@ -31,6 +34,8 @@ public:
 	virtual Vector2f GetPosition()const override = 0;
 
 	virtual void PushBack(float x, float y)override = 0;
+
+	void SetPosition(const Vector2f& pos);
 
 };
 

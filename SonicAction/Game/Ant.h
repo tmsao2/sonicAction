@@ -10,7 +10,7 @@ private:
 	void NormalUpdate();
 	void DyingUpdate();
 	void DieUpdate();
-
+	std::shared_ptr<Enemy> MakeClone();
 	void (Ant::*_updater)();
 
 public:

@@ -1,11 +1,11 @@
 #include "GameScene.h"
 #include "ResultScene.h"
 #include "PauseScene.h"
+#include "SceneController.h"
 #include "../Game.h"
 #include "../Input.h"
 #include "../Camera.h"
 #include "../Collider.h"
-#include "SceneController.h"
 #include "../Map/Ground.h"
 #include "../Map/Stage.h"
 #include "../Map/BackGround.h"
@@ -14,6 +14,8 @@
 #include "../Game/Player.h"
 #include "../Game/Enemy.h"
 #include "../Game/Ant.h"
+#include "../Game/OnceSpawner.h"
+#include <algorithm>
 #include <DxLib.h>
 
 
@@ -23,13 +25,18 @@ GameScene::GameScene(SceneController& controller) :Scene(controller)
 	_camera = std::make_unique<Camera>();
 	_player = std::make_shared<Player>(*_camera);
 	_actors.emplace_back(_player);
-	_actors.push_back(std::make_shared<Ant>(*_camera, *_player, 300, 300));
-	_bg = std::make_unique<BackGround>(*_camera);
+	
 	_camera->AddPlayer(_player);
 	_ground = std::make_unique<Ground>(*_camera);
+
 	_stage = std::make_unique<Stage>(*_camera);
-	_stage->DataLoad("level/level1.fmf");
+	_stage->DataLoad("level/sonic_level1.fmf");
 	_stage->BuildGround(*_ground);
+	_stage->BuildSpawner(*_player);
+
+	_spawners = _stage->Spawenrs();
+
+	_bg = std::make_unique<BackGround>(*_camera);
 	_bg->AddParts("img/bg-clouds.png", Vector2f(0, 0), 0.1, true, LayoutType::repeat, size);
 	_bg->AddParts("img/bg-mountains.png", Vector2f(0, -30), 0.4, true, LayoutType::repeat, size);
 	_bg->AddParts("img/tree.png", Vector2f(0, 0), 0.9, true, LayoutType::repeat, size);
@@ -100,8 +107,8 @@ void GameScene::Update(const Input& input)
 		{
 			if (!_player->IsDying() && !_player->IsDie())
 			{
-				CheckBlockCol(_player);
 				CheckGround(_player);
+				CheckBlockCol(_player);
 			}
 			if (_player->GetPosition().y >= _ground->GetDeadLine())
 			{
@@ -113,7 +120,6 @@ void GameScene::Update(const Input& input)
 		{
 			if (!actor->IsDying() && !actor->IsDie())
 			{
-				CheckBlockCol(actor);
 				if (!_player->IsDying() && !_player->IsDie())
 				{
 					CheckActorCol(actor);
@@ -121,6 +127,11 @@ void GameScene::Update(const Input& input)
 				CheckGround(actor);
 			}
 		}
+	}
+
+	for (auto spawner : _spawners)
+	{
+		spawner->Update(_actors);
 	}
 
 	for (auto actor : _actors)
@@ -143,6 +154,13 @@ void GameScene::Update(const Input& input)
 	{
 		_controller.PushScene(std::make_unique<PauseScene>(_controller));
 	}
+
+	auto it = std::remove_if(_actors.begin(), _actors.end(), [](const std::shared_ptr<Actor>& actor) 
+	{
+		return actor->IsDie();
+	});
+
+	_actors.erase(it, _actors.end());
 }
 
 void GameScene::Draw()

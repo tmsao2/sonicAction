@@ -55,12 +55,12 @@ void BackGround::DrawBg()
 		auto pos = Vector2f(0, 0);
 		if (parts.type == LayoutType::repeat) {
 			auto poffset = offset * parts.rate;
-			pos = parts.initpos - Vector2f(static_cast<int>(poffset.x) % parts.repeatX, poffset.y);
+			pos = parts.initpos - Vector2f(static_cast<int>(poffset.x) % parts.repeatX, 0);
 			cnt = (wsize.w / parts.size.w) + 1;
 		}
 		else {
 			auto poffset = offset * parts.rate;
-			pos = parts.initpos - Vector2f(poffset.x, poffset.y);
+			pos = parts.initpos - Vector2f(poffset.x, 0);
 			cnt = 1;
 		}
 		for (int i = 0; i < cnt; ++i) {

@@ -26,7 +26,7 @@ protected:
 	int _nowidx;
 	const Camera& _camera;
 	int _frame;
-	std::unique_ptr<ActionSet> _actionSet;
+	std::shared_ptr<ActionSet> _actionSet;
 
 	void ChangeAction(const char* act);
 	void LoadAction(const char* filepath);

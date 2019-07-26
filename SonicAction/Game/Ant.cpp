@@ -50,6 +50,11 @@ void Ant::DieUpdate()
 
 }
 
+std::shared_ptr<Enemy> Ant::MakeClone()
+{
+	return std::make_shared<Ant>(*this);
+}
+
 
 void Ant::Update(const Input & input)
 {

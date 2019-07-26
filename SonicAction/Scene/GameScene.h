@@ -6,6 +6,7 @@
 
 class Actor;
 class Player;
+class Spawner;
 class Camera;
 class Ground;
 class Stage;
@@ -16,6 +17,7 @@ class GameScene :
 {
 private:
 	std::vector<std::shared_ptr<Actor>> _actors;
+	std::vector<std::shared_ptr<Spawner>> _spawners;
 	std::shared_ptr<Player> _player;
 	std::unique_ptr<BackGround> _bg;
 	std::unique_ptr<Camera> _camera;

@@ -8,7 +8,6 @@ private:
 	int _jumpframe;
 	int _jumpSE;
 	int _deadSE;
-	int _speed;
 	bool _isAerial;
 	bool Move(const Input & input);
 

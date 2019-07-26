@@ -24,3 +24,8 @@ void Enemy::OnCollision(Actor & actor)
 		actor.OnDead();
 	}
 }
+
+void Enemy::SetPosition(const Vector2f & pos)
+{
+	_pos = pos;
+}

@@ -1,13 +1,13 @@
 #include "Spawner.h"
-
+#include "Enemy.h"
 
 
 std::shared_ptr<Enemy> Spawner::CreateClone()
 {
-	return std::shared_ptr<Enemy>();
+	return _original->MakeClone();
 }
 
-Spawner::Spawner(std::shared_ptr<Enemy> origin)
+Spawner::Spawner(std::shared_ptr<Enemy> origin):_original(origin)
 {
 
 }

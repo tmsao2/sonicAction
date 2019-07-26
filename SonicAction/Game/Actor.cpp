@@ -51,17 +51,17 @@ bool Actor::AdvanceAnimetion()
 
 Actor::Actor(const Camera& c):_camera(c)
 {
-	_actionSet = std::make_unique<ActionSet>();
+	_actionSet = std::make_shared<ActionSet>();
 }
 
 Actor::Actor(const Camera & c, const Vector2f p) : _camera(c),_pos(p)
 {
-	_actionSet = std::make_unique<ActionSet>();
+	_actionSet = std::make_shared<ActionSet>();
 }
 
 Actor::Actor(const Camera & c, float x, float y) : _camera(c),_pos(x,y)
 {
-	_actionSet = std::make_unique<ActionSet>();
+	_actionSet = std::make_shared<ActionSet>();
 }
 
 const Rect Actor::GetRect(const Rect& rec) const
