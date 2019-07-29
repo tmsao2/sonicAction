@@ -87,7 +87,8 @@ void GameScene::CheckBlockCol(std::shared_ptr<Actor> actor)
 
 void GameScene::CheckGround(std::shared_ptr<Actor> actor)
 {
-	if (actor->GetVelocity().y > 0)
+	auto vec = actor->GetVelocity();
+	if (vec.y > 0)
 	{
 		float grad;
 		float y = _ground->GetGroundY(&(*actor), grad);
@@ -140,7 +141,14 @@ void GameScene::Update(const Input& input)
 	}
 
 	_stage->Update();
-
+	auto it = std::remove_if(_actors.begin(), _actors.end(), [](const std::shared_ptr<Actor>& actor)
+	{
+		return actor->IsDie();
+	});
+	if (!_player->IsDie())
+	{
+		_actors.erase(it, _actors.end());
+	}
 	if(_player->IsDie())
 	{
 		_controller.ChangeScene(std::make_unique<GameScene>(_controller));
@@ -154,13 +162,6 @@ void GameScene::Update(const Input& input)
 	{
 		_controller.PushScene(std::make_unique<PauseScene>(_controller));
 	}
-
-	auto it = std::remove_if(_actors.begin(), _actors.end(), [](const std::shared_ptr<Actor>& actor) 
-	{
-		return actor->IsDie();
-	});
-
-	_actors.erase(it, _actors.end());
 }
 
 void GameScene::Draw()
