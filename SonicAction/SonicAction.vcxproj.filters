@@ -111,6 +111,18 @@
     <ClCompile Include="Game\OnceSpawner.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Coin.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Event.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\EventQueue.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\HUD.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -192,6 +204,18 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Game\OnceSpawner.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Coin.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Event.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\EventQueue.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\HUD.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,6 +10,7 @@ class Spawner;
 class Camera;
 class Ground;
 class Stage;
+
 class BackGround;
 
 class GameScene :

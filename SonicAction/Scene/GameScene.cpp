@@ -87,11 +87,13 @@ void GameScene::CheckBlockCol(std::shared_ptr<Actor> actor)
 
 void GameScene::CheckGround(std::shared_ptr<Actor> actor)
 {
-	auto vec = actor->GetVelocity();
-	if (vec.y > 0)
+	float grad;
+	Vector2f vec;
+	float y = _ground->GetGroundY(&(*actor), grad, vec);
+	auto p_vec = actor->GetVelocity().Normalized();
+	auto dot = Dot(Vector2f(vec.y, -vec.x), p_vec);
+	if (dot < 0)
 	{
-		float grad;
-		float y = _ground->GetGroundY(&(*actor), grad);
 		actor->OnGround(grad, y);
 	}
 }
@@ -123,7 +125,7 @@ void GameScene::Update(const Input& input)
 			{
 				if (!_player->IsDying() && !_player->IsDie())
 				{
-					CheckActorCol(actor);
+					//CheckActorCol(actor);
 				}
 				CheckGround(actor);
 			}

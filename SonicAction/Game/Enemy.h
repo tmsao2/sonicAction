@@ -23,8 +23,6 @@ public:
 	virtual void OnDead() = 0;
 	virtual void OnCollision(Actor& actor)override;
 
-	virtual const Rect& GetCollider() = 0;
-
 	virtual Vector2f GetVelocity()const override = 0;
 	virtual void SetVelocity(const Vector2f& v) override = 0;
 

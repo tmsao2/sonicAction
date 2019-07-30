@@ -126,10 +126,9 @@ void Ground::Draw()
 
 }
 
-int Ground::GetGroundY(Actor* actor,float& grad)const
+float Ground::GetGroundY(Actor* actor,float& grad,Vector2f& v)const
 {
 	auto pos = actor->GetPosition();
-
 
 	auto lambda= [pos](const Terrain& s) {
 		return s.seg.start.x <= pos.x && pos.x <= s.seg.end.x;
@@ -152,6 +151,9 @@ int Ground::GetGroundY(Actor* actor,float& grad)const
 
 	if (it == _terrain.end())return INT_MIN;
 
+	v = it->seg.end - it->seg.start;
+	v.Normalize();
+
 	if (fabsf(pos.x - it->seg.start.x) < 4.0f)
 	{
 		if (it - 1 == _terrain.begin())return y;
@@ -168,7 +170,7 @@ int Ground::GetGroundY(Actor* actor,float& grad)const
 		auto grad2 = (next.seg.end.y - next.seg.start.y) / (next.seg.end.x - next.seg.start.x);
 		grad = grad * t + (1.0f - t)*(grad2 + grad) / 2;
 	}
-
+	
 	return y;
 }
 

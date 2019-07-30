@@ -43,7 +43,6 @@ public:
 	Vector2f GetPosition()const;
 	Vector2f GetVelocity()const;
 	Vector2f GetAccel()const;
-	const Rect& GetCollider();
 	void SetVelocity(const Vector2f& v);
 	void SetAccel(const Vector2f& a);
 };

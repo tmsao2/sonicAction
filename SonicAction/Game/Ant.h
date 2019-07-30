@@ -32,8 +32,6 @@ public:
 	Vector2f GetAccel()const override;
 	void SetAccel(const Vector2f& a)override;
 
-	const Rect& GetCollider()override;
-
 	Vector2f GetPosition()const override;
 	void PushBack(float x, float y)override;
 	

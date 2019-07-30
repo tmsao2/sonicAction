@@ -148,14 +148,6 @@ Vector2f Player::GetAccel() const
 	return _accel;
 }
 
-const Rect& Player::GetCollider()
-{
-	auto& actInfo = _actionSet->actInfo[_currentAct];
-	auto& cut = actInfo.cuts[0];
-	_rect = GetRect(cut.actrects[0].rc);
-	return _rect;
-}
-
 void Player::SetVelocity(const Vector2f& v)
 {
 	_vel = v;

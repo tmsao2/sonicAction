@@ -6,6 +6,7 @@
 #include "../Game/Spawner.h"
 #include "../Game/OnceSpawner.h"
 #include "../Game/Player.h"
+#include "../Game/Coin.h"
 #include "../Collider.h"
 #include "../Camera.h"
 #include <DxLib.h>
@@ -31,6 +32,11 @@ const std::vector<std::unique_ptr<Block>>& Stage::Blocks() const
 	return _blocks;
 }
 
+const std::vector<std::shared_ptr<Event>>& Stage::Events() const
+{
+	return _events;
+}
+
 const std::vector<std::shared_ptr<Spawner>>& Stage::Spawenrs() const
 {
 	return _spawners;
@@ -42,6 +48,10 @@ void Stage::Update()
 	{
 		b->Update();
 	}
+	for (auto& e : _events)
+	{
+		e->Update();
+	}
 }
 
 void Stage::Draw()
@@ -49,6 +59,10 @@ void Stage::Draw()
 	for (auto& b : _blocks)
 	{
 		b->Draw();
+	}
+	for (auto& e : _events)
+	{
+		e->Draw();
 	}
 }
 
@@ -123,6 +137,21 @@ void Stage::DataLoad(const char * path)
 		});
 	}
 
+	std::vector<unsigned char> eventdata(_fmfdata.mapWidth*_fmfdata.mapHeight);
+	FileRead_read(eventdata.data(), eventdata.size(), fmf_h);
+	for (int y = 0; y < _fmfdata.mapHeight; ++y)
+	{
+		for (int x = 0; x < _fmfdata.mapWidth; ++x)
+		{
+			auto no = eventdata[x + y * _fmfdata.mapWidth];
+			if (no == (unsigned char)EventType::coin)
+			{
+				_events.emplace_back(std::make_shared<Coin>
+					(Vector2(x*block_size, y*block_size),
+						_camera));
+			}
+		}
+	}
 
 	FileRead_close(fmf_h);
 }

@@ -123,14 +123,6 @@ Vector2f Ant::GetAccel() const
 	return _accel;
 }
 
-const Rect & Ant::GetCollider()
-{
-	auto& actInfo = _actionSet->actInfo[_currentAct];
-	auto& cut = actInfo.cuts[0];
-	_rect = GetRect(cut.actrects[0].rc);
-	return _rect;
-}
-
 Vector2f Ant::GetPosition() const
 {
 	return _pos;

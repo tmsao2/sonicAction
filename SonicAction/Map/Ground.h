@@ -37,7 +37,7 @@ public:
 	Ground(const Camera& c);
 	~Ground();
 	void Draw();
-	int GetGroundY(Actor* actor,float& grad)const;
+	float GetGroundY(Actor* actor,float& grad,Vector2f& v)const;
 	int GetDeadLine()const;
 	void AddSegment(const Segment& s,EdgeType t);
 	void AddSegment(const Vector2f& posA, const Vector2f& posB, EdgeType t);

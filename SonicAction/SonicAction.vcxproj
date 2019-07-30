@@ -136,7 +136,11 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Actor.cpp" />
     <ClCompile Include="Game\Ant.cpp" />
+    <ClCompile Include="Game\Coin.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
+    <ClCompile Include="Game\Event.cpp" />
+    <ClCompile Include="Game\EventQueue.cpp" />
+    <ClCompile Include="Game\HUD.cpp" />
     <ClCompile Include="Game\OnceSpawner.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Spawner.cpp" />
@@ -166,7 +170,11 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Actor.h" />
     <ClInclude Include="Game\Ant.h" />
+    <ClInclude Include="Game\Coin.h" />
     <ClInclude Include="Game\Enemy.h" />
+    <ClInclude Include="Game\Event.h" />
+    <ClInclude Include="Game\EventQueue.h" />
+    <ClInclude Include="Game\HUD.h" />
     <ClInclude Include="Game\OnceSpawner.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\Spawner.h" />
