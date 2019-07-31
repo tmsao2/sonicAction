@@ -8,19 +8,23 @@ enum class EventType
 	goal=5
 };
 
-class Camera;
+class Actor;
+class EventQueue;
 
 class Event
 {
+	friend EventQueue;
 protected:
-	const Camera& _camera;
-	Rect _rect;
+	bool _isAvailable = true;
+	EventQueue& _eventQ;
 public:
-	Event(const Rect& rc, const Camera& c);
+	Event(EventQueue& e);
 	~Event();
+	bool IsAvailvale()const { return _isAvailable; }
 	virtual void Draw() = 0;
 	virtual void Update() = 0;
 	virtual EventType GetEventType()const = 0;
-	const Rect& GetCollider();
+	virtual const Rect& GetCollider() = 0;
+	virtual void OnCollision() = 0;
 };
 

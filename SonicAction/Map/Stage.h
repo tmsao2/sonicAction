@@ -10,6 +10,7 @@ class Camera;
 class Player;
 class Spawner;
 class Event;
+class EventQueue;
 
 struct FMF
 {
@@ -42,6 +43,7 @@ private:
 	FMF _fmfdata;
 
 	const Camera& _camera;
+	EventQueue& _eventQ;
 
 	int CheckRunLength(int& idxX,int& idxY,int no,std::vector<unsigned char> data);
 
@@ -53,11 +55,12 @@ private:
 	std::vector<std::shared_ptr<Spawner>> _spawners;
 
 public:
-	Stage(const Camera& c);
+	Stage(const Camera& c, EventQueue& e);
 	~Stage();
-	const std::vector<std::unique_ptr<Block>>& Blocks()const;
-	const std::vector<std::shared_ptr<Event>>& Events()const;
 	const std::vector<std::shared_ptr<Spawner>>& Spawenrs()const;
+	std::vector<std::unique_ptr<Block>>& Blocks();
+	std::vector<std::shared_ptr<Event>>& Events();
+
 	void Update();
 	void Draw();
 	void DataLoad(const char* path);

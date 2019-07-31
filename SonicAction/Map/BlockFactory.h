@@ -24,7 +24,7 @@ protected:
 public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
-	virtual void OnCollision(Actor* actor, const Rect& rc) = 0;
+	virtual void OnCollision(Actor& actor, const Rect& rc) = 0;
 
 	const Rect& GetCollider()const;
 };

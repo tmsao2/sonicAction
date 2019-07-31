@@ -18,7 +18,7 @@ constexpr int lift_no = 2;
 constexpr int slide_no = 3;
 constexpr int pendulum_no = 4;
 
-Stage::Stage(const Camera& c):_camera(c)
+Stage::Stage(const Camera& c, EventQueue& e):_camera(c),_eventQ(e)
 {
 }
 
@@ -27,12 +27,12 @@ Stage::~Stage()
 {
 }
 
-const std::vector<std::unique_ptr<Block>>& Stage::Blocks() const
+std::vector<std::unique_ptr<Block>>& Stage::Blocks()
 {
 	return _blocks;
 }
 
-const std::vector<std::shared_ptr<Event>>& Stage::Events() const
+std::vector<std::shared_ptr<Event>>& Stage::Events()
 {
 	return _events;
 }
@@ -148,7 +148,7 @@ void Stage::DataLoad(const char * path)
 			{
 				_events.emplace_back(std::make_shared<Coin>
 					(Vector2(x*block_size, y*block_size),
-						_camera));
+						_camera,_eventQ));
 			}
 		}
 	}

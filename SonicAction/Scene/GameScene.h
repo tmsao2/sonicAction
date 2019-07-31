@@ -10,8 +10,9 @@ class Spawner;
 class Camera;
 class Ground;
 class Stage;
-
+class EventQueue;
 class BackGround;
+class HUD;
 
 class GameScene :
 	public Scene
@@ -24,9 +25,13 @@ private:
 	std::unique_ptr<Camera> _camera;
 	std::unique_ptr<Ground> _ground;
 	std::unique_ptr<Stage> _stage;
+	std::shared_ptr<HUD> _hud;
+	std::unique_ptr<EventQueue> _eventQ;
+
 	void CheckActorCol(std::shared_ptr<Actor> actor);
 	void CheckBlockCol(std::shared_ptr<Actor> actor);
 	void CheckGround(std::shared_ptr<Actor> actor);
+	void CheckEventCol(std::shared_ptr<Actor> actor);
 public:
 	GameScene(SceneController& controller);
 	~GameScene();

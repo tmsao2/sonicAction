@@ -2,16 +2,11 @@
 #include "../Camera.h"
 
 
-Event::Event(const Rect& rc, const Camera& c):_rect(rc),_camera(c)
+Event::Event(EventQueue& e):_eventQ(e)
 {
 }
 
 
 Event::~Event()
 {
-}
-
-const Rect & Event::GetCollider()
-{
-	return _rect;
 }

@@ -15,6 +15,9 @@
 #include "../Game/Enemy.h"
 #include "../Game/Ant.h"
 #include "../Game/OnceSpawner.h"
+#include "../Game/Event.h"
+#include "../Game/HUD.h"
+#include "../Game/EventQueue.h"
 #include <algorithm>
 #include <DxLib.h>
 
@@ -29,12 +32,18 @@ GameScene::GameScene(SceneController& controller) :Scene(controller)
 	_camera->AddPlayer(_player);
 	_ground = std::make_unique<Ground>(*_camera);
 
-	_stage = std::make_unique<Stage>(*_camera);
+	_hud = std::make_shared<HUD>();
+	_eventQ = std::make_unique<EventQueue>();
+	_eventQ->AddObserver(_hud);
+
+	_stage = std::make_unique<Stage>(*_camera,*_eventQ);
 	_stage->DataLoad("level/sonic_level1.fmf");
 	_stage->BuildGround(*_ground);
 	_stage->BuildSpawner(*_player);
 
 	_spawners = _stage->Spawenrs();
+
+	
 
 	_bg = std::make_unique<BackGround>(*_camera);
 	_bg->AddParts("img/bg-clouds.png", Vector2f(0, 0), 0.1, true, LayoutType::repeat, size);
@@ -80,7 +89,7 @@ void GameScene::CheckBlockCol(std::shared_ptr<Actor> actor)
 			rc.center = prect.center - brect.center;
 			rc.size = size;
 			isOn = prect.center.y < brect.center.y;
-			b->OnCollision(&(*_player), rc);
+			b->OnCollision((*_player), rc);
 		}
 	}
 }
@@ -98,11 +107,37 @@ void GameScene::CheckGround(std::shared_ptr<Actor> actor)
 	}
 }
 
+void GameScene::CheckEventCol(std::shared_ptr<Actor> actor)
+{
+	auto viewrange = _camera->GetViewRange();
+	auto& events = _stage->Events();
+	for (auto& e : events)
+	{
+		auto& erect = e->GetCollider();
+		auto& prect = actor->GetCollider();
+		if (erect.Right() < viewrange.Left() || erect.Left() > viewrange.Right())
+		{
+			continue;
+		}
+		if (Collider::IsCollided(prect, erect))
+		{
+			e->OnCollision();
+		}
+	}
+	auto it = std::remove_if(events.begin(), events.end(), [](std::shared_ptr<Event> e)
+	{
+		return !e->IsAvailvale();
+	});
+
+	events.erase(it, events.end());
+}
+
 void GameScene::Update(const Input& input)
 {
 	auto size = Game::GetInstance().GetConfig().GetScreenSize();
 	_camera->Update();
 	_camera->SetRange(size);
+	_eventQ->Notify();
 
 	for (auto& actor : _actors)
 	{
@@ -112,6 +147,7 @@ void GameScene::Update(const Input& input)
 			{
 				CheckGround(_player);
 				CheckBlockCol(_player);
+				CheckEventCol(_player);
 			}
 			if (_player->GetPosition().y >= _ground->GetDeadLine())
 			{
@@ -125,7 +161,7 @@ void GameScene::Update(const Input& input)
 			{
 				if (!_player->IsDying() && !_player->IsDie())
 				{
-					//CheckActorCol(actor);
+					CheckActorCol(actor);
 				}
 				CheckGround(actor);
 			}
@@ -175,5 +211,6 @@ void GameScene::Draw()
 		actor->Draw();
 		actor->DebagDraw();
 	}
+	_hud->Draw();
 	DrawString(12, 0, "Game", 0xffffff);
 }

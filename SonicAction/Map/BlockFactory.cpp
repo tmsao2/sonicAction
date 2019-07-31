@@ -41,16 +41,16 @@ public:
 			16, 0, 16, 16, _blockH, true);
 	}
 
-	void OnCollision(Actor* actor, const Rect& rc)override 
+	void OnCollision(Actor& actor, const Rect& rc)override 
 	{
-		auto vel = actor->GetVelocity();
-		auto accel = actor->GetAccel();
+		auto vel = actor.GetVelocity();
+		auto accel = actor.GetAccel();
 		auto sz = Size(0, 0);
 		if (rc.Height() <= rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0);
+				actor.OnGround(0);
 				accel.x = 0;
 			}
 			if (rc.center.y == 0)return;
@@ -65,9 +65,9 @@ public:
 			vel.x = 0;
 			accel.x = 0;
 		}
-		actor->SetVelocity(vel);
-		actor->SetAccel(accel);
-		actor->PushBack(sz.w, sz.h);
+		actor.SetVelocity(vel);
+		actor.SetAccel(accel);
+		actor.PushBack(sz.w, sz.h);
 	}
 
 };
@@ -114,17 +114,17 @@ public:
 		}
 	}
 
-	void OnCollision(Actor* actor, const Rect& rc)override
+	void OnCollision(Actor& actor, const Rect& rc)override
 	{
-		auto vel = actor->GetVelocity();
-		auto accel = actor->GetAccel();
+		auto vel = actor.GetVelocity();
+		auto accel = actor.GetAccel();
 		auto sz = Size(0, 0);
 		if (rc.Height() < rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0);
-				actor->PushBack(_speed, 0);
+				actor.OnGround(0);
+				actor.PushBack(_speed, 0);
 			}
 			if (rc.center.y == 0)return;
 			vel.y = 0;
@@ -138,9 +138,9 @@ public:
 			vel.x = 0;
 			accel.x = 0;
 		}
-		actor->SetVelocity(vel);
-		actor->SetAccel(accel);
-		actor->PushBack(sz.w, sz.h);
+		actor.SetVelocity(vel);
+		actor.SetAccel(accel);
+		actor.PushBack(sz.w, sz.h);
 	}
 		
 };
@@ -187,18 +187,18 @@ public:
 		}
 	}
 
-	void OnCollision(Actor* actor, const Rect& rc)override
+	void OnCollision(Actor& actor, const Rect& rc)override
 	{
-		auto vel = actor->GetVelocity();
-		auto accel = actor->GetAccel();
+		auto vel = actor.GetVelocity();
+		auto accel = actor.GetAccel();
 		auto sz = Size(0, 0);
 
 		if (rc.Height() < rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0);
-				actor->PushBack(0, _speed);
+				actor.OnGround(0);
+				actor.PushBack(0, _speed);
 			}
 			if (rc.center.y == 0)return;
 			vel.y = 0;
@@ -212,9 +212,9 @@ public:
 			vel.x = 0;
 			accel.x = 0;
 		}
-		actor->SetVelocity(vel);
-		actor->SetAccel(accel);
-		actor->PushBack(sz.w, sz.h);
+		actor.SetVelocity(vel);
+		actor.SetAccel(accel);
+		actor.PushBack(sz.w, sz.h);
 	}
 };
 
@@ -267,17 +267,17 @@ public:
 		DrawLine(_pivot.x, _pivot.y, _rect.center.x, _rect.center.y, 0xff0000);
 	}
 
-	void OnCollision(Actor* actor, const Rect& rc)override
+	void OnCollision(Actor& actor, const Rect& rc)override
 	{
-		auto vel = actor->GetVelocity();
-		auto accel = actor->GetAccel();
+		auto vel = actor.GetVelocity();
+		auto accel = actor.GetAccel();
 		auto sz = Size(0, 0);
 
 		if (rc.Height() < rc.Width())
 		{
 			if (rc.center.y < 0)
 			{
-				actor->OnGround(0);
+				actor.OnGround(0);
 			}
 			if (rc.center.y == 0)return;
 			vel.y = 0;
@@ -291,9 +291,9 @@ public:
 			vel.x = 0;
 			accel.x = 0;
 		}
-		actor->SetVelocity(vel);
-		actor->SetAccel(accel);
-		actor->PushBack(sz.w, sz.h);
+		actor.SetVelocity(vel);
+		actor.SetAccel(accel);
+		actor.PushBack(sz.w, sz.h);
 	}
 };
 
