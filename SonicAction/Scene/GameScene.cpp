@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "ResultScene.h"
 #include "PauseScene.h"
+#include "Playing3DScene.h"
 #include "SceneController.h"
 #include "../Game.h"
 #include "../Input.h"
@@ -194,7 +195,7 @@ void GameScene::Update(const Input& input)
 	
 	if (input.IsTriggered(0, COMMAND::OK))
 	{
-		_controller.ChangeScene(std::make_unique<ResultScene>(_controller));
+		_controller.ChangeScene(std::make_unique<Playing3DScene>(_controller));
 	}
 	if (input.IsTriggered(0, COMMAND::PAUSE)) 
 	{

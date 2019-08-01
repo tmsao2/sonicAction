@@ -1,10 +1,12 @@
 #include "Coin.h"
 #include "../System/FileSystem.h"
 #include "../System/ImageLoader.h"
+#include "../System/SoundLoader.h"
 #include "../Camera.h"
 #include "../Game.h"
 #include "Actor.h"
 #include "EventQueue.h"
+#include "ScoreUpper.h"
 
 
 Coin::Coin(const Vector2 & pos, const Camera & c, EventQueue& e) :_rect(Rect(pos, Size(32, 32))), _camera(c), Event(e)
@@ -12,6 +14,9 @@ Coin::Coin(const Vector2 & pos, const Camera & c, EventQueue& e) :_rect(Rect(pos
 	ImageData data;
 	Game::GetInstance().GetFileSystem()->Load("img/atlas.png", data);
 	_imgH = data.GetHandle();
+	SoundData se;
+	Game::GetInstance().GetFileSystem()->Load("se/coin.wav", se);
+	_coinSE = se.GetHandle();
 }
 
 Coin::~Coin()
@@ -53,5 +58,7 @@ void Coin::OnCollision()
 	if (_isAvailable)
 	{
 		_eventQ.AddEvent(this);
+		_eventQ.AddEvent(new ScoreUpper(_eventQ));
+		PlaySoundMem(_coinSE, DX_PLAYTYPE_BACK);
 	}
 }

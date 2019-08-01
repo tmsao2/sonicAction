@@ -142,8 +142,10 @@
     <ClCompile Include="Game\EventObserver.cpp" />
     <ClCompile Include="Game\EventQueue.cpp" />
     <ClCompile Include="Game\HUD.cpp" />
+    <ClCompile Include="Game\Locust.cpp" />
     <ClCompile Include="Game\OnceSpawner.cpp" />
     <ClCompile Include="Game\Player.cpp" />
+    <ClCompile Include="Game\ScoreUpper.cpp" />
     <ClCompile Include="Game\Spawner.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -155,6 +157,7 @@
     <ClCompile Include="Scene\GameScene.cpp" />
     <ClCompile Include="Scene\OptionScene.cpp" />
     <ClCompile Include="Scene\PauseScene.cpp" />
+    <ClCompile Include="Scene\Playing3DScene.cpp" />
     <ClCompile Include="Scene\ResultScene.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneController.cpp" />
@@ -164,6 +167,7 @@
     <ClCompile Include="System\ImageLoader.cpp" />
     <ClCompile Include="System\Loader.cpp" />
     <ClCompile Include="System\MapLoader.cpp" />
+    <ClCompile Include="System\SoundLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -177,8 +181,10 @@
     <ClInclude Include="Game\EventObserver.h" />
     <ClInclude Include="Game\EventQueue.h" />
     <ClInclude Include="Game\HUD.h" />
+    <ClInclude Include="Game\Locust.h" />
     <ClInclude Include="Game\OnceSpawner.h" />
     <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\ScoreUpper.h" />
     <ClInclude Include="Game\Spawner.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Input.h" />
@@ -189,6 +195,7 @@
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="Scene\OptionScene.h" />
     <ClInclude Include="Scene\PauseScene.h" />
+    <ClInclude Include="Scene\Playing3DScene.h" />
     <ClInclude Include="Scene\ResultScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneController.h" />
@@ -198,6 +205,7 @@
     <ClInclude Include="System\ImageLoader.h" />
     <ClInclude Include="System\Loader.h" />
     <ClInclude Include="System\MapLoader.h" />
+    <ClInclude Include="System\SoundLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

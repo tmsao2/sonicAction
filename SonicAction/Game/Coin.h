@@ -8,6 +8,7 @@ class Coin :
 {
 private:
 	int _imgH;
+	int _coinSE;
 	Rect _rect;
 	const Camera& _camera;
 public:

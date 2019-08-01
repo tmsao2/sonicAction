@@ -11,6 +11,7 @@ class Enemy :
 protected:
 	const Player& _player;
 	bool _isReverse;
+	int _deadSE;
 	virtual std::shared_ptr<Enemy> MakeClone() = 0;
 public:
 	Enemy(const Camera& camera,const Player& player,const Vector2f& pos);

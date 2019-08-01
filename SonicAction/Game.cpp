@@ -71,6 +71,9 @@ void Game::InputInit()
 	_input->AddCommand(0, COMMAND::DOWN, 0, KEY_INPUT_DOWN);
 	_input->AddCommand(0, COMMAND::RIGHT, 0, KEY_INPUT_RIGHT);
 	_input->AddCommand(0, COMMAND::LEFT, 0, KEY_INPUT_LEFT);
+	_input->AddCommand(0, COMMAND::BACK, 0, KEY_INPUT_Q);
+	_input->AddCommand(0, COMMAND::FRONT, 0, KEY_INPUT_E);
+	_input->AddCommand(0, COMMAND::ROTATE, 0, KEY_INPUT_R);
 	_input->AddCommand(0, COMMAND::JUMP, 0, KEY_INPUT_SPACE);
 	_input->AddCommand(0, COMMAND::ATTACK, 0, KEY_INPUT_X);
 

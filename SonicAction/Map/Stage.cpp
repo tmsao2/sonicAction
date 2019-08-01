@@ -3,6 +3,7 @@
 #include "BlockFactory.h"
 #include "../Game/Player.h"
 #include "../Game/Ant.h"
+#include "../Game/Locust.h"
 #include "../Game/Spawner.h"
 #include "../Game/OnceSpawner.h"
 #include "../Game/Player.h"
@@ -204,6 +205,7 @@ void Stage::BuildGround(Ground & g)
 void Stage::BuildSpawner(const Player& player)
 {
 	auto ant = std::make_shared<Ant>(_camera, player, 0, 0);
+	auto locust = std::make_shared<Locust>(_camera, player, 0, 0);
 	for (auto& spawner : _spawnerPositions)
 	{
 		switch ((EnemyType)spawner.first)
@@ -215,7 +217,10 @@ void Stage::BuildSpawner(const Player& player)
 			}
 			break;
 		case EnemyType::locust:
-
+			for (auto p : spawner.second)
+			{
+				_spawners.emplace_back(std::make_shared<OnceSpawner>(_camera, p, locust));
+			}
 			break;
 		case EnemyType::lizard:
 

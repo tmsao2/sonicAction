@@ -1,0 +1,14 @@
+1) Note that I assume you already know how to apply effects to a model.
+2) In the MMEffects tab within MikuMikuDance, open the Map Effect File
+window and find the name of the model you want to edit
+3) Right-click on it and select "Subset-Extract"
+4)You will see a list of materials appear under the object. Apply the
+following effects to each material (the normal-mapping effects are found 
+in the same folder containing the model's textures):
+
+For SONIC THE HEDGEHOG:
+
+Body; Eyelids Upper; Eyelids Bottom; Mouth Left; Mouth Right -> body.fx
+Clothes -> clothes.fx
+Eyes -> eyes.fx
+Shoes -> shoes.fx

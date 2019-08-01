@@ -25,6 +25,15 @@
     <Filter Include="System">
       <UniqueIdentifier>{2bf751bd-c562-42cc-b227-4448e450a8d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Actor">
+      <UniqueIdentifier>{785e24b8-5a34-489e-a541-35835addec0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Event">
+      <UniqueIdentifier>{6c6a8e38-3c42-4bfc-9619-387160d35d70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Spawner">
+      <UniqueIdentifier>{9a7fcebb-5cb2-413e-afe5-4d558187b2fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,26 +69,11 @@
     <ClCompile Include="Scene\PauseScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Actor.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Player.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Ant.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Enemy.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Spawner.cpp">
-      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Map\BackGround.cpp">
       <Filter>Map</Filter>
@@ -108,23 +102,50 @@
     <ClCompile Include="System\MapLoader.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="Game\OnceSpawner.cpp">
-      <Filter>Game</Filter>
+    <ClCompile Include="System\SoundLoader.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Actor.cpp">
+      <Filter>Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Ant.cpp">
+      <Filter>Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy.cpp">
+      <Filter>Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player.cpp">
+      <Filter>Game\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Game\Coin.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Event</Filter>
     </ClCompile>
     <ClCompile Include="Game\Event.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\EventQueue.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\HUD.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Event</Filter>
     </ClCompile>
     <ClCompile Include="Game\EventObserver.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\EventQueue.cpp">
+      <Filter>Game\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\HUD.cpp">
+      <Filter>Game\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\OnceSpawner.cpp">
+      <Filter>Game\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Spawner.cpp">
+      <Filter>Game\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Locust.cpp">
+      <Filter>Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\ScoreUpper.cpp">
+      <Filter>Game\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Playing3DScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,26 +179,11 @@
     <ClInclude Include="Scene\PauseScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Actor.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Player.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Ant.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Enemy.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Spawner.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Map\BackGround.h">
       <Filter>Map</Filter>
@@ -206,23 +212,50 @@
     <ClInclude Include="System\MapLoader.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="Game\OnceSpawner.h">
-      <Filter>Game</Filter>
+    <ClInclude Include="System\SoundLoader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Actor.h">
+      <Filter>Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Ant.h">
+      <Filter>Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Enemy.h">
+      <Filter>Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player.h">
+      <Filter>Game\Actor</Filter>
     </ClInclude>
     <ClInclude Include="Game\Coin.h">
-      <Filter>Game</Filter>
+      <Filter>Game\Event</Filter>
     </ClInclude>
     <ClInclude Include="Game\Event.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\EventQueue.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\HUD.h">
-      <Filter>Game</Filter>
+      <Filter>Game\Event</Filter>
     </ClInclude>
     <ClInclude Include="Game\EventObserver.h">
-      <Filter>Game</Filter>
+      <Filter>Game\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\EventQueue.h">
+      <Filter>Game\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\HUD.h">
+      <Filter>Game\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\OnceSpawner.h">
+      <Filter>Game\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Spawner.h">
+      <Filter>Game\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Locust.h">
+      <Filter>Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\ScoreUpper.h">
+      <Filter>Game\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Playing3DScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

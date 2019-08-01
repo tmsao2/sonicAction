@@ -4,6 +4,7 @@
 enum class EventType
 {
 	coin = 1,
+	score = 2,
 	ultimate=3,
 	goal=5
 };

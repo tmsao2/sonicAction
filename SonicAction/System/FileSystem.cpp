@@ -2,7 +2,7 @@
 #include "Loader.h"
 #include "ImageLoader.h"
 #include "ActionLoader.h"
-
+#include "SoundLoader.h"
 
 std::string FileSystem::GetExtension(const char * path)
 {
@@ -15,6 +15,7 @@ FileSystem::FileSystem()
 {
 	_loaders["bmp"] = _loaders["png"] = _loaders["jpg"] = std::make_shared<ImageLoader>();
 	_loaders["act"] = std::make_shared<ActionLoader>();
+	_loaders["wav"] = std::make_shared<SoundLoader>();
 }
 
 

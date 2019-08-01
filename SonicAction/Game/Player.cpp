@@ -3,6 +3,7 @@
 #include "../Input.h"
 #include "../Camera.h"
 #include "../System/FileSystem.h"
+#include "../System/SoundLoader.h"
 #include "../System/ImageLoader.h"
 #include <iostream>
 
@@ -15,8 +16,12 @@ Player::Player(const Camera & c):Actor(c)
 {
 
 	LoadAction("action/player.act");
-	_jumpSE = LoadSoundMem("se/jump.wav");
-	_deadSE = LoadSoundMem("se/down.wav");
+	SoundData jump;
+	SoundData dead;
+	Game::GetInstance().GetFileSystem()->Load("se/jump.wav", jump);
+	Game::GetInstance().GetFileSystem()->Load("se/down.wav", dead);
+	_jumpSE = jump.GetHandle();
+	_deadSE = dead.GetHandle();
 	_pos = Vector2f(default_pos_x, default_pos_y);
 	_jumpframe = 0;
 	_isAerial = true;
