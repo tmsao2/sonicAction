@@ -135,7 +135,6 @@ void Player::Draw()
 	auto c = _camera.GetOffset();
 	auto pos = _pos - c;
 	DrawRectRotaGraph2(static_cast<int>(pos.x), static_cast<int>(pos.y), rc.Left(), rc.Top(), rc.Width(), rc.Height(),centerX,cut.center.y, 3.0f, _angle, _imgH, true, _isLeft);
-	std::cout << pos.x << "," << pos.y << std::endl;
 }
 
 Vector2f Player::GetPosition() const
@@ -166,12 +165,12 @@ void Player::SetAccel(const Vector2f& a)
 
 bool Player::Move(const Input & input)
 {
-	if (input.IsPressed(0, COMMAND::RIGHT))
+	if (input.IsPressed(0, COMMAND::RRIGHT))
 	{
 		_isLeft = false;
 		_accel.x = 0.1f;
 	}
-	else if (input.IsPressed(0, COMMAND::LEFT))
+	else if (input.IsPressed(0, COMMAND::RLEFT))
 	{
 		_isLeft = true;
 		_accel.x = -0.1f;
@@ -218,8 +217,8 @@ void Player::Accelerator(const Input & input)
 	{
 		_vel.x = _isLeft ? -max_speed : max_speed;
 	}
-	if (!input.IsPressed(0, COMMAND::RIGHT) &&
-		!input.IsPressed(0, COMMAND::LEFT)||
+	if (!input.IsPressed(0, COMMAND::RRIGHT) &&
+		!input.IsPressed(0, COMMAND::RLEFT)||
 		(_vel.x*_accel.x < 0))
 	{
 		_vel.x *= 0.95f;

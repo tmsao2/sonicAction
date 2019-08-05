@@ -6,7 +6,9 @@
 #include "Player.h"
 
 
-Locust::Locust(const Camera & camera, const Player & player, int x, int y) :Enemy(camera, player, Vector2f(x, y))
+constexpr int jump_frame = 60;
+
+Locust::Locust(const Camera & camera, const Player & player, int x, int y, EventQueue& e) :Enemy(camera, player, Vector2f(x, y),e)
 {
 	LoadAction("action/locust.act");
 	auto sign = player.GetPosition().x - x;
@@ -16,13 +18,43 @@ Locust::Locust(const Camera & camera, const Player & player, int x, int y) :Enem
 	_angle = 0;
 	_isLeft = true;
 	_isReverse = false;
+	_isAerial = false;
 	ChangeAction("idle");
 	_updater = &Locust::NormalUpdate; 
+}
+
+void Locust::Jump()
+{
+	_vel.y -= 12.0f;
+	_jumpCnt = 0;
+	_isAerial = true;
+	ChangeAction("jump");
+	_updater = &Locust::JumpUpdate;
 }
 
 void Locust::NormalUpdate()
 {
 	_vel += _accel;
+	auto sign = _player.GetPosition().x - _pos.x;
+	if (abs(sign) > 50)
+	{
+		sign = sign / abs(sign);
+		_isLeft = sign > 0 ? true : false;
+		_vel.x = sign;
+	}
+	if (++_jumpCnt > jump_frame)
+	{
+		Jump();
+	}
+}
+
+void Locust::JumpUpdate()
+{
+	if (!_isAerial)
+	{
+		ChangeAction("idle");
+		_updater = &Locust::NormalUpdate;
+	}
 	auto sign = _player.GetPosition().x - _pos.x;
 	if (abs(sign) > 50)
 	{
@@ -87,6 +119,7 @@ void Locust::OnGround(float grad, float adjustY)
 	{
 		_vel.y = 0;
 		_pos.y = adjustY;
+		_isAerial = false;
 		_angle = atanf(grad);
 	}
 }

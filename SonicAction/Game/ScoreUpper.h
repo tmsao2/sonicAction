@@ -5,13 +5,15 @@ class ScoreUpper :
 {
 private:
 	Rect _rect;
+	int _score;
 public:
-	ScoreUpper(EventQueue& e);
+	ScoreUpper(EventQueue& e,int score);
 	~ScoreUpper();
 	void Draw();
 	void Update();
 	EventType GetEventType()const;
 	const Rect& GetCollider();
 	void OnCollision();
+	int GetScore()override final;
 };
 

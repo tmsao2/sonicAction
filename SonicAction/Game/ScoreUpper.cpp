@@ -2,8 +2,9 @@
 
 
 
-ScoreUpper::ScoreUpper(EventQueue& e) :Event(e)
+ScoreUpper::ScoreUpper(EventQueue& e, int score) :Event(e),_score(score)
 {
+	_deleteByQueue = true;
 }
 
 
@@ -21,7 +22,7 @@ void ScoreUpper::Update()
 
 EventType ScoreUpper::GetEventType() const
 {
-	return EventType();
+	return EventType::score;
 }
 
 const Rect & ScoreUpper::GetCollider()
@@ -31,4 +32,9 @@ const Rect & ScoreUpper::GetCollider()
 
 void ScoreUpper::OnCollision()
 {
+}
+
+int ScoreUpper::GetScore()
+{
+	return _score;
 }

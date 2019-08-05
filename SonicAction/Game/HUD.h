@@ -7,6 +7,7 @@ class HUD :
 private:
 	int _coinH;
 	int _coinNum = 0;
+	int _score = 0;
 public:
 	HUD();
 	~HUD();

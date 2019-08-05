@@ -31,6 +31,14 @@ void EventQueue::Notify()
 	{
 		return !e->IsAvailvale();
 	});
+	auto itCpy = it;
+	for (; itCpy != _events.end(); ++itCpy)
+	{
+		if ((*itCpy)->_deleteByQueue)
+		{
+			delete (*itCpy);
+		}
+	}
 	_events.erase(it, _events.end());
 }
 

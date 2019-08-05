@@ -117,6 +117,11 @@ Vector2f operator/(const Vector2f & lv, const Vector2f & rv) {
 	return Vector2f(lv.x / rv.x, lv.y / rv.y);
 }
 
+VECTOR operator-(const VECTOR & lv)
+{
+	return VGet(-lv.x, -lv.y, -lv.z);
+}
+
 float Dot(const Vector2f & v1, const Vector2f & v2)
 {
 	return v1.x * v2.x + v1.y * v2.y;

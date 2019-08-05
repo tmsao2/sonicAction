@@ -4,12 +4,14 @@
 #include <memory>
 #include "../Geometry.h"
 
-struct Anim
+struct Player3D
 {
 	int modelH;
 	int animIdx;
 	float animTime;
 	float totalTime;
+	VECTOR pos;
+	VECTOR dir;
 };
 
 struct Camera3D
@@ -23,8 +25,11 @@ class Playing3DScene :
 	public Scene
 {
 private:
-	std::vector<Anim> _anim;
+	std::vector<Player3D> _anim;
 	std::shared_ptr<Camera3D> _camera;
+	void DrawCube();
+	void CameraUpdate(const Input& input);
+	void PlayerUpdate(const Input& input);
 public:
 	Playing3DScene(SceneController& controller);
 	~Playing3DScene();

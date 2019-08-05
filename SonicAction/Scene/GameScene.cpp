@@ -19,6 +19,8 @@
 #include "../Game/Event.h"
 #include "../Game/HUD.h"
 #include "../Game/EventQueue.h"
+#include "../System/FileSystem.h"
+#include "../System/SoundLoader.h"
 #include <algorithm>
 #include <DxLib.h>
 
@@ -44,7 +46,9 @@ GameScene::GameScene(SceneController& controller) :Scene(controller)
 
 	_spawners = _stage->Spawenrs();
 
-	
+	SoundData bgm;
+	Game::GetInstance().GetFileSystem()->Load("bgm/bgm.wav", bgm);
+	_bgmH = bgm.GetHandle();
 
 	_bg = std::make_unique<BackGround>(*_camera);
 	_bg->AddParts("img/bg-clouds.png", Vector2f(0, 0), 0.1, true, LayoutType::repeat, size);
@@ -54,6 +58,9 @@ GameScene::GameScene(SceneController& controller) :Scene(controller)
 
 GameScene::~GameScene()
 {
+	if (CheckSoundMem(_bgmH)) {
+		StopSoundMem(_bgmH);
+	}
 }
 
 
@@ -135,6 +142,10 @@ void GameScene::CheckEventCol(std::shared_ptr<Actor> actor)
 
 void GameScene::Update(const Input& input)
 {
+	if (!CheckSoundMem(_bgmH))
+	{
+		PlaySoundMem(_bgmH, DX_PLAYTYPE_LOOP);
+	}
 	auto size = Game::GetInstance().GetConfig().GetScreenSize();
 	_camera->Update();
 	_camera->SetRange(size);
@@ -210,7 +221,6 @@ void GameScene::Draw()
 	_stage->Draw();
 	for (auto actor : _actors) {
 		actor->Draw();
-		actor->DebagDraw();
 	}
 	_hud->Draw();
 	DrawString(12, 0, "Game", 0xffffff);

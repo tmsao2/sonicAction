@@ -24,11 +24,11 @@ void PauseScene::Update(const Input & input)
 		_winHeight += 2;
 		return;
 	}
-	if (input.IsTriggered(0, COMMAND::DOWN))
+	if (input.IsTriggered(0, COMMAND::RDOWN))
 	{
 
 	}
-	if (input.IsTriggered(0, COMMAND::UP))
+	if (input.IsTriggered(0, COMMAND::RUP))
 	{
 
 	}

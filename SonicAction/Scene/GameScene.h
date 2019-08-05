@@ -18,6 +18,7 @@ class GameScene :
 	public Scene
 {
 private:
+	int _bgmH;
 	std::vector<std::shared_ptr<Actor>> _actors;
 	std::vector<std::shared_ptr<Spawner>> _spawners;
 	std::shared_ptr<Player> _player;

@@ -17,6 +17,7 @@ class Event
 	friend EventQueue;
 protected:
 	bool _isAvailable = true;
+	bool _deleteByQueue = false;
 	EventQueue& _eventQ;
 public:
 	Event(EventQueue& e);
@@ -27,5 +28,6 @@ public:
 	virtual EventType GetEventType()const = 0;
 	virtual const Rect& GetCollider() = 0;
 	virtual void OnCollision() = 0;
+	virtual int GetScore();
 };
 

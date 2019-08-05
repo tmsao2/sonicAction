@@ -5,7 +5,7 @@
 #include "../System/ImageLoader.h"
 #include "Player.h"
 
-Ant::Ant(const Camera& camera, const Player& player,int x,int y):Enemy(camera,player,Vector2f(x,y))
+Ant::Ant(const Camera& camera, const Player& player,int x,int y, EventQueue& e):Enemy(camera,player,Vector2f(x,y),e)
 {
 	LoadAction("action/ant.act");
 	auto sign = player.GetPosition().x - x;

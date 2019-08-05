@@ -204,8 +204,8 @@ void Stage::BuildGround(Ground & g)
 
 void Stage::BuildSpawner(const Player& player)
 {
-	auto ant = std::make_shared<Ant>(_camera, player, 0, 0);
-	auto locust = std::make_shared<Locust>(_camera, player, 0, 0);
+	auto ant = std::make_shared<Ant>(_camera, player, 0, 0,_eventQ);
+	auto locust = std::make_shared<Locust>(_camera, player, 0, 0,_eventQ);
 	for (auto& spawner : _spawnerPositions)
 	{
 		switch ((EnemyType)spawner.first)

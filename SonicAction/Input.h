@@ -6,6 +6,10 @@
 
 enum class COMMAND
 {
+	RUP,
+	RDOWN,
+	RRIGHT,
+	RLEFT,
 	UP,
 	DOWN,
 	RIGHT,

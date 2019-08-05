@@ -58,7 +58,7 @@ void Coin::OnCollision()
 	if (_isAvailable)
 	{
 		_eventQ.AddEvent(this);
-		_eventQ.AddEvent(new ScoreUpper(_eventQ));
+		_eventQ.AddEvent(new ScoreUpper(_eventQ,100));
 		PlaySoundMem(_coinSE, DX_PLAYTYPE_BACK);
 	}
 }

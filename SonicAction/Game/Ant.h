@@ -14,7 +14,7 @@ private:
 	void (Ant::*_updater)();
 
 public:
-	Ant(const Camera& camera,const Player& player,int x,int y);
+	Ant(const Camera& camera,const Player& player,int x,int y,EventQueue& e);
 	~Ant();
 
 	void Update(const Input& input)override final;

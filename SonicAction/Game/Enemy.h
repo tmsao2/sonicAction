@@ -3,6 +3,7 @@
 
 class Player;
 class Spawner;
+class EventQueue;
 
 class Enemy :
 	public Actor
@@ -12,9 +13,11 @@ protected:
 	const Player& _player;
 	bool _isReverse;
 	int _deadSE;
+	EventQueue& _eventQ;
+
 	virtual std::shared_ptr<Enemy> MakeClone() = 0;
 public:
-	Enemy(const Camera& camera,const Player& player,const Vector2f& pos);
+	Enemy(const Camera& camera,const Player& player,const Vector2f& pos, EventQueue& e);
 	virtual ~Enemy();
 
 	virtual void Update(const Input&) = 0;

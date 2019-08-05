@@ -59,6 +59,8 @@ Vector2f operator*(const float lv, const Vector2f rv);
 Vector2f operator/(const Vector2f& lv, const float rv);
 Vector2f operator/(const Vector2f& lv, const Vector2f& rv);
 
+VECTOR operator-(const VECTOR& lv);
+
 float Dot(const Vector2f& v1, const Vector2f& v2);
 float Cross(const Vector2f& v1, const Vector2f& v2);
 

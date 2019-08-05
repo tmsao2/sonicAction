@@ -7,14 +7,18 @@ class Locust :
 	public Enemy
 {
 private:
-private:
+	bool _isAerial;
+	int _jumpCnt = 0;
+	void Jump();
+
 	void NormalUpdate();
+	void JumpUpdate();
 	void DyingUpdate();
 	void DieUpdate();
 	std::shared_ptr<Enemy> MakeClone();
 	void (Locust::*_updater)();
 public:
-	Locust(const Camera& camera, const Player& player, int x, int y);
+	Locust(const Camera& camera, const Player& player, int x, int y, EventQueue& e);
 	~Locust();
 
 	void Update(const Input& input)override final;

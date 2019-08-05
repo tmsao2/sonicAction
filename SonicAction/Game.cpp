@@ -38,7 +38,7 @@ void Game::Init()
 {
 	DxLib::SetGraphMode(screen_size_x, screen_size_y, 32);
 	DxLib::ChangeWindowMode(true);
-	DxLib::SetMainWindowText("ソニック的な～");
+	DxLib::SetMainWindowText("1701377_高須真樹");
 	if (DxLib_Init() == -1) 
 	{
 		return;
@@ -67,10 +67,14 @@ void Game::InputInit()
 {
 	_input = std::make_unique<Input>();
 
-	_input->AddCommand(0, COMMAND::UP, 0, KEY_INPUT_UP);
-	_input->AddCommand(0, COMMAND::DOWN, 0, KEY_INPUT_DOWN);
-	_input->AddCommand(0, COMMAND::RIGHT, 0, KEY_INPUT_RIGHT);
-	_input->AddCommand(0, COMMAND::LEFT, 0, KEY_INPUT_LEFT);
+	_input->AddCommand(0, COMMAND::RUP, 0, KEY_INPUT_UP);
+	_input->AddCommand(0, COMMAND::RDOWN, 0, KEY_INPUT_DOWN);
+	_input->AddCommand(0, COMMAND::RRIGHT, 0, KEY_INPUT_RIGHT);
+	_input->AddCommand(0, COMMAND::RLEFT, 0, KEY_INPUT_LEFT);
+	_input->AddCommand(0, COMMAND::UP, 0, KEY_INPUT_W);
+	_input->AddCommand(0, COMMAND::DOWN, 0, KEY_INPUT_S);
+	_input->AddCommand(0, COMMAND::RIGHT, 0, KEY_INPUT_D);
+	_input->AddCommand(0, COMMAND::LEFT, 0, KEY_INPUT_A);
 	_input->AddCommand(0, COMMAND::BACK, 0, KEY_INPUT_Q);
 	_input->AddCommand(0, COMMAND::FRONT, 0, KEY_INPUT_E);
 	_input->AddCommand(0, COMMAND::ROTATE, 0, KEY_INPUT_R);
@@ -83,10 +87,10 @@ void Game::InputInit()
 	auto padnum = _input->GetJoypadCount();
 	for (int i = 0; i < padnum; i++)
 	{
-		_input->AddCommand(i, COMMAND::UP, i + 1, PAD_INPUT_UP);
-		_input->AddCommand(i, COMMAND::DOWN, i + 1, PAD_INPUT_DOWN);
-		_input->AddCommand(i, COMMAND::RIGHT, i + 1, PAD_INPUT_RIGHT);
-		_input->AddCommand(i, COMMAND::LEFT, i + 1, PAD_INPUT_LEFT);
+		_input->AddCommand(i, COMMAND::RUP, i + 1, PAD_INPUT_UP);
+		_input->AddCommand(i, COMMAND::RDOWN, i + 1, PAD_INPUT_DOWN);
+		_input->AddCommand(i, COMMAND::RRIGHT, i + 1, PAD_INPUT_RIGHT);
+		_input->AddCommand(i, COMMAND::RLEFT, i + 1, PAD_INPUT_LEFT);
 		_input->AddCommand(i, COMMAND::JUMP, i + 1, PAD_INPUT_4);
 		_input->AddCommand(i, COMMAND::ATTACK, i + 1, PAD_INPUT_3);
 		_input->AddCommand(i, COMMAND::OK, i + 1, PAD_INPUT_7);
